@@ -38,13 +38,15 @@ export function TopBar({
       <div className="flex-1" />
 
       {/* Period segmented control */}
-      <div className="flex bg-surface-low rounded-lg p-0.5">
+      <div className="flex bg-surface-low rounded-lg p-0.5" role="group" aria-label="Reporting period">
         {PERIODS.map(p => (
           <button
             key={p}
+            type="button"
             onClick={() => onPeriodChange?.(p)}
+            aria-pressed={period === p}
             className={cn(
-              'px-2.5 py-1 rounded-md text-[12px] font-medium transition-colors',
+              'focus-ring px-2.5 py-1 rounded-md text-[12px] font-medium transition-colors',
               period === p
                 ? 'bg-surface text-on-surface font-semibold shadow-sm'
                 : 'text-secondary hover:text-on-surface'
@@ -57,8 +59,9 @@ export function TopBar({
 
       {secondaryAction && (
         <button
+          type="button"
           onClick={secondaryAction.onClick}
-          className="h-8 px-3.5 rounded-lg text-[12px] font-semibold border border-outline text-on-surface bg-surface hover:bg-surface-low transition-colors"
+          className="focus-ring h-8 px-3.5 rounded-lg text-[12px] font-semibold border border-outline text-on-surface bg-surface hover:bg-surface-low transition-colors"
         >
           {secondaryAction.label}
         </button>
@@ -66,8 +69,9 @@ export function TopBar({
 
       {primaryAction && (
         <button
+          type="button"
           onClick={primaryAction.onClick}
-          className="h-8 px-3.5 rounded-lg text-[12px] font-semibold bg-primary text-white hover:bg-primary-hover transition-colors"
+          className="focus-ring h-8 px-3.5 rounded-lg text-[12px] font-semibold bg-primary text-white hover:bg-primary-hover transition-colors"
         >
           {primaryAction.label}
         </button>

@@ -16,9 +16,12 @@ export function CalendarPage() {
   const [view, setView] = useState<View>('month')
   const [year, setYear] = useState(2026)
   const [month, setMonth] = useState(4) // 0-indexed, May = 4
+  const [activeFilter, setActiveFilter] = useState('All Channels')
+  const [notice, setNotice] = useState<string | null>(null)
   const [hoveredEvent, setHoveredEvent] = useState<string | null>(null)
   const navigate = useNavigate()
   const { data: events } = useCalendarEvents()
+  const today = new Date()
 
   const daysInMonth = new Date(year, month + 1, 0).getDate()
   const firstDay = new Date(year, month, 1).getDay()
@@ -26,6 +29,11 @@ export function CalendarPage() {
   const getEventsForDay = (day: number) => {
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
     return events?.filter(e => e.startDate <= dateStr && e.endDate >= dateStr) ?? []
+  }
+  const handleDemoFilter = (chip: string) => {
+    setActiveFilter(chip)
+    setNotice(`${chip} pinned for demo snapshot`)
+    window.setTimeout(() => setNotice(null), 1600)
   }
 
   return (
@@ -39,17 +47,28 @@ export function CalendarPage() {
 
       {/* Controls */}
       <div className="border-b border-outline bg-surface px-6 py-2.5 flex items-center gap-4 flex-shrink-0">
-        <button onClick={() => setMonth(m => m === 0 ? (setYear(y => y - 1), 11) : m - 1)} className="text-[18px] text-secondary hover:text-on-surface w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-low">‹</button>
+        <button type="button" onClick={() => setMonth(m => m === 0 ? (setYear(y => y - 1), 11) : m - 1)} className="focus-ring text-[18px] text-secondary hover:text-on-surface w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-low">‹</button>
         <div className="text-[14px] font-semibold text-on-surface min-w-[140px] text-center">
           {MONTHS[month]} {year}
         </div>
-        <button onClick={() => setMonth(m => m === 11 ? (setYear(y => y + 1), 0) : m + 1)} className="text-[18px] text-secondary hover:text-on-surface w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-low">›</button>
+        <button type="button" onClick={() => setMonth(m => m === 11 ? (setYear(y => y + 1), 0) : m + 1)} className="focus-ring text-[18px] text-secondary hover:text-on-surface w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-low">›</button>
         <div className="flex-1" />
+        {notice && <span className="text-[11px] text-primary font-medium">{notice}</span>}
 
         {/* Filter chips */}
         <div className="flex gap-1.5">
           {['All Channels', 'All Brands', 'All Statuses'].map(f => (
-            <button key={f} className="text-[11px] px-3 py-1 rounded-full border border-outline text-secondary hover:bg-surface-low">
+            <button
+              type="button"
+              key={f}
+              onClick={() => handleDemoFilter(f)}
+              className={cn(
+                'focus-ring text-[11px] px-3 py-1 rounded-full border transition-colors',
+                activeFilter === f
+                  ? 'bg-primary text-white border-primary'
+                  : 'border-outline text-secondary hover:bg-surface-low'
+              )}
+            >
               {f} ▾
             </button>
           ))}
@@ -77,12 +96,12 @@ export function CalendarPage() {
           {Array.from({ length: daysInMonth }).map((_, i) => {
             const day = i + 1
             const dayEvents = getEventsForDay(day)
-            const isToday = day === 12 && month === 4 && year === 2026
+            const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear()
 
             return (
               <div
                 key={day}
-                className="bg-surface min-h-[100px] p-1.5 relative hover:bg-surface-low/50 transition-colors cursor-pointer"
+                className="bg-surface min-h-[100px] p-1.5 relative hover:bg-surface-low/50 transition-colors"
               >
                 <div className={cn(
                   'text-[12px] font-semibold w-6 h-6 flex items-center justify-center rounded-full mb-1',
@@ -92,9 +111,10 @@ export function CalendarPage() {
                 </div>
                 <div className="space-y-0.5">
                   {dayEvents.slice(0, 3).map(ev => (
-                    <div
+                    <button
+                      type="button"
                       key={ev.id}
-                      className="text-[10px] font-medium px-1.5 py-0.5 rounded truncate text-white"
+                      className="focus-ring w-full text-left text-[10px] font-medium px-1.5 py-0.5 rounded truncate text-white"
                       style={{ background: ev.brandColor }}
                       onMouseEnter={() => setHoveredEvent(ev.id)}
                       onMouseLeave={() => setHoveredEvent(null)}
@@ -102,7 +122,7 @@ export function CalendarPage() {
                       title={`${ev.name} · ${ev.brand} · ${formatNumber(ev.audienceSize)} recipients`}
                     >
                       {ev.name}
-                    </div>
+                    </button>
                   ))}
                   {dayEvents.length > 3 && (
                     <div className="text-[10px] text-outline-strong px-1">+{dayEvents.length - 3} more</div>

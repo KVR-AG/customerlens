@@ -18,12 +18,17 @@ export function MetricsExplorerPage() {
   const [period, setPeriod] = useState<Period>('YTD')
   const [activeTab, setActiveTab] = useState<Domain>(METRIC_DOMAINS[0])
   const [view, setView] = useState<'summary' | 'deep-dive'>('summary')
+  const [notice, setNotice] = useState<string | null>(null)
 
-  const { data: loyalty } = useLoyaltyMetrics()
-  const { data: retail } = useRetailMetrics()
-  const { data: rfm } = useRfmSegments()
-  const { data: demo } = useDemographics()
-  const { data: cx } = useCxMetrics()
+  const loyaltyQuery = useLoyaltyMetrics()
+  const retailQuery = useRetailMetrics()
+  const rfmQuery = useRfmSegments()
+  const demoQuery = useDemographics()
+  const cxQuery = useCxMetrics()
+  const showNotice = (message: string) => {
+    setNotice(message)
+    window.setTimeout(() => setNotice(null), 1500)
+  }
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
@@ -31,7 +36,7 @@ export function MetricsExplorerPage() {
         title="Metrics Explorer"
         period={period}
         onPeriodChange={setPeriod}
-        primaryAction={{ label: '+ New Filter', onClick: () => {} }}
+        primaryAction={{ label: '+ New Filter', onClick: () => showNotice('Saved filter composer opens in full workspace mode') }}
       />
 
       <div className="flex flex-1 overflow-hidden">
@@ -48,9 +53,10 @@ export function MetricsExplorerPage() {
               {METRIC_DOMAINS.map(d => (
                 <button
                   key={d}
+                  type="button"
                   onClick={() => setActiveTab(d)}
                   className={cn(
-                    'px-4 py-3 text-[12px] font-medium whitespace-nowrap border-b-2 transition-colors',
+                    'focus-ring px-4 py-3 text-[12px] font-medium whitespace-nowrap border-b-2 transition-colors',
                     activeTab === d
                       ? 'border-primary text-primary font-semibold'
                       : 'border-transparent text-secondary hover:text-on-surface'
@@ -68,15 +74,17 @@ export function MetricsExplorerPage() {
             {(['summary', 'deep-dive'] as const).map(v => (
               <button
                 key={v}
+                type="button"
                 onClick={() => setView(v)}
                 className={cn(
-                  'text-[11px] font-semibold px-3 py-1 rounded-md transition-colors',
+                  'focus-ring text-[11px] font-semibold px-3 py-1 rounded-md transition-colors',
                   view === v ? 'bg-primary text-white' : 'text-secondary hover:text-on-surface'
                 )}
               >
                 {v === 'summary' ? 'Summary' : 'Deep Dive'}
               </button>
             ))}
+            <div className="ml-auto text-[11px] text-primary min-h-4">{notice}</div>
           </div>
 
           {/* Content area */}
@@ -84,11 +92,35 @@ export function MetricsExplorerPage() {
             <DomainContent
               tab={activeTab}
               view={view}
-              loyalty={loyalty}
-              retail={retail}
-              rfm={rfm}
-              demo={demo}
-              cx={cx}
+              loyalty={loyaltyQuery.data}
+              retail={retailQuery.data}
+              rfm={rfmQuery.data}
+              demo={demoQuery.data}
+              cx={cxQuery.data}
+              loadingByDomain={{
+                'Sales & Conversion': retailQuery.isLoading,
+                'Loyalty Membership': loyaltyQuery.isLoading,
+                Engagement: loyaltyQuery.isLoading,
+                'Points Economics': loyaltyQuery.isLoading,
+                'Customer Economics': loyaltyQuery.isLoading,
+                'Margin & Pricing': retailQuery.isLoading,
+                'Stock Health': retailQuery.isLoading,
+                'RFM & Segments': rfmQuery.isLoading,
+                Demographics: demoQuery.isLoading,
+                CX: cxQuery.isLoading,
+              }}
+              errorByDomain={{
+                'Sales & Conversion': retailQuery.isError,
+                'Loyalty Membership': loyaltyQuery.isError,
+                Engagement: loyaltyQuery.isError,
+                'Points Economics': loyaltyQuery.isError,
+                'Customer Economics': loyaltyQuery.isError,
+                'Margin & Pricing': retailQuery.isError,
+                'Stock Health': retailQuery.isError,
+                'RFM & Segments': rfmQuery.isError,
+                Demographics: demoQuery.isError,
+                CX: cxQuery.isError,
+              }}
             />
           </div>
         </div>
@@ -98,6 +130,8 @@ export function MetricsExplorerPage() {
 }
 
 function FilterPanel() {
+  const [notice, setNotice] = useState('')
+
   return (
     <>
       <div>
@@ -106,8 +140,9 @@ function FilterPanel() {
           {['Group', 'Brand', 'Country', 'City', 'Mall', 'Store'].map((g, i) => (
             <button
               key={g}
+              type="button"
               className={cn(
-                'text-[11px] px-2.5 py-1 rounded-md font-medium transition-colors',
+                'focus-ring text-[11px] px-2.5 py-1 rounded-md font-medium transition-colors',
                 i === 0 ? 'bg-primary text-white' : 'bg-surface-low text-secondary hover:bg-surface-high'
               )}
             >
@@ -147,14 +182,38 @@ function FilterPanel() {
         ))}
       </div>
 
-      <button className="w-full text-[12px] font-semibold text-primary border border-primary rounded-lg py-2 hover:bg-primary hover:text-white transition-colors">
+      <button
+        type="button"
+        onClick={() => {
+          setNotice('Current filter snapshot saved for demo')
+          window.setTimeout(() => setNotice(''), 1400)
+        }}
+        className="focus-ring w-full text-[12px] font-semibold text-primary border border-primary rounded-lg py-2 hover:bg-primary hover:text-white transition-colors"
+      >
         + Save Current Filters
       </button>
+      {notice && <p className="text-[11px] text-primary">{notice}</p>}
     </>
   )
 }
 
-function DomainContent({ tab, view, loyalty, retail, rfm, demo, cx }: any) {
+function DomainContent({ tab, view, loyalty, retail, rfm, demo, cx, loadingByDomain, errorByDomain }: any) {
+  if (loadingByDomain?.[tab]) {
+    return (
+      <div className="flex items-center justify-center h-40 text-outline-strong text-[13px]">
+        Loading {tab.toLowerCase()} metrics…
+      </div>
+    )
+  }
+
+  if (errorByDomain?.[tab]) {
+    return (
+      <div className="flex items-center justify-center h-40 text-[13px] text-negative">
+        Could not load metrics for this domain. Please retry in a moment.
+      </div>
+    )
+  }
+
   if (tab === 'Sales & Conversion' && retail) {
     const metrics = [
       retail.totalRevenue,
@@ -214,7 +273,7 @@ function DomainContent({ tab, view, loyalty, retail, rfm, demo, cx }: any) {
 
   return (
     <div className="flex items-center justify-center h-40 text-outline-strong text-[13px]">
-      Loading metrics…
+      No metrics available for this selection yet.
     </div>
   )
 }

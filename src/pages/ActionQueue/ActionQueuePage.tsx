@@ -18,12 +18,12 @@ const MOCK_TASKS = [
 const SEVERITY_BADGE: Record<AlertSeverity, string> = {
   critical: 'badge-critical',
   warning: 'badge-warning',
-  watch: 'bg-amber-50 text-amber-700 border border-amber-200',
+  watch: 'bg-warning-bg text-warning border border-warning/20',
 }
 
 const STATUS_BADGE: Record<string, string> = {
-  open:        'bg-blue-50 text-blue-600 border border-blue-200',
-  in_progress: 'bg-violet-50 text-violet-700 border border-violet-200',
+  open:        'bg-ai-bg text-ai-accent border border-ai-accent/20',
+  in_progress: 'bg-surface-high text-on-surface-var border border-outline',
   done:        'badge-positive',
 }
 
@@ -31,9 +31,14 @@ export function ActionQueuePage() {
   const [period, setPeriod] = useState<Period>('YTD')
   const [filter, setFilter] = useState('all')
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [notice, setNotice] = useState<string | null>(null)
   const navigate = useNavigate()
 
   const filtered = filter === 'all' ? MOCK_TASKS : MOCK_TASKS.filter(t => t.status === filter)
+  const showNotice = (message: string) => {
+    setNotice(message)
+    window.setTimeout(() => setNotice(null), 1600)
+  }
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
@@ -43,10 +48,11 @@ export function ActionQueuePage() {
       <div className="border-b border-outline bg-surface px-6 py-2.5 flex items-center gap-2 flex-shrink-0">
         {[['all', 'All'], ['open', 'Open'], ['in_progress', 'In Progress'], ['done', 'Done']].map(([v, l]) => (
           <button
+            type="button"
             key={v}
             onClick={() => setFilter(v)}
             className={cn(
-              'text-[12px] font-medium px-3 py-1.5 rounded-lg transition-colors',
+              'focus-ring text-[12px] font-medium px-3 py-1.5 rounded-lg transition-colors',
               filter === v ? 'bg-primary text-white' : 'text-secondary hover:bg-surface-low'
             )}
           >
@@ -54,6 +60,7 @@ export function ActionQueuePage() {
           </button>
         ))}
         <div className="flex-1" />
+        {notice && <span className="text-[11px] text-primary font-medium">{notice}</span>}
         <span className="text-[12px] text-outline-strong">{filtered.length} tasks</span>
       </div>
 
@@ -61,8 +68,9 @@ export function ActionQueuePage() {
         {filtered.map(task => (
           <div key={task.id} className="card overflow-hidden">
             {/* Task header */}
-            <div
-              className="p-4 flex items-start gap-3 cursor-pointer hover:bg-surface-low/50 transition-colors"
+            <button
+              type="button"
+              className="focus-ring w-full text-left p-4 flex items-start gap-3 cursor-pointer hover:bg-surface-low/50 transition-colors"
               onClick={() => setExpanded(expanded === task.id ? null : task.id)}
             >
               <div className="flex flex-col gap-1.5 flex-shrink-0 mt-0.5">
@@ -82,7 +90,7 @@ export function ActionQueuePage() {
                 </div>
               </div>
               <div className="text-outline-strong">{expanded === task.id ? '↑' : '↓'}</div>
-            </div>
+            </button>
 
             {/* Expanded detail */}
             {expanded === task.id && (
@@ -95,21 +103,31 @@ export function ActionQueuePage() {
                   <div className="text-[12px] font-semibold text-on-surface mb-2">AI Recommended Actions</div>
                   <div className="flex gap-2 flex-wrap">
                     <button
+                      type="button"
                       onClick={() => navigate('/metrics')}
-                      className="text-[12px] font-semibold text-primary border border-primary/30 px-3 py-1.5 rounded-lg hover:bg-primary/5"
+                      className="focus-ring text-[12px] font-semibold text-primary border border-primary/30 px-3 py-1.5 rounded-lg hover:bg-primary/5"
                     >
-                      📊 Investigate in Explorer
+                      Investigate in Explorer
                     </button>
                     <button
+                      type="button"
                       onClick={() => navigate('/campaigns')}
-                      className="text-[12px] font-semibold text-primary border border-primary/30 px-3 py-1.5 rounded-lg hover:bg-primary/5"
+                      className="focus-ring text-[12px] font-semibold text-primary border border-primary/30 px-3 py-1.5 rounded-lg hover:bg-primary/5"
                     >
-                      📣 Create Campaign
+                      Create Campaign
                     </button>
-                    <button className="text-[12px] font-semibold text-on-surface-var border border-outline px-3 py-1.5 rounded-lg hover:bg-surface-low">
+                    <button
+                      type="button"
+                      onClick={() => showNotice(`Marked "${task.title}" as done in demo mode`)}
+                      className="focus-ring text-[12px] font-semibold text-on-surface-var border border-outline px-3 py-1.5 rounded-lg hover:bg-surface-low"
+                    >
                       ✓ Mark Done
                     </button>
-                    <button className="text-[12px] font-semibold text-on-surface-var border border-outline px-3 py-1.5 rounded-lg hover:bg-surface-low">
+                    <button
+                      type="button"
+                      onClick={() => showNotice(`Reassign flow for "${task.title}" opens in full app`)}
+                      className="focus-ring text-[12px] font-semibold text-on-surface-var border border-outline px-3 py-1.5 rounded-lg hover:bg-surface-low"
+                    >
                       👤 Reassign
                     </button>
                   </div>
@@ -130,7 +148,13 @@ export function ActionQueuePage() {
                   </div>
                   <div className="flex gap-2 mt-2">
                     <input placeholder="Add a comment..." className="flex-1 h-9 border border-outline rounded-lg px-3 text-[12px] focus:outline-none focus:ring-1 focus:ring-primary" />
-                    <button className="px-3 h-9 text-[12px] font-semibold bg-primary text-white rounded-lg">Send</button>
+                    <button
+                      type="button"
+                      onClick={() => showNotice('Comment saved in demo mode')}
+                      className="focus-ring px-3 h-9 text-[12px] font-semibold bg-primary text-white rounded-lg"
+                    >
+                      Send
+                    </button>
                   </div>
                 </div>
               </div>

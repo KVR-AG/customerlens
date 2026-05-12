@@ -40,9 +40,10 @@ export function SideNav({ collapsed, onToggle }: SideNavProps) {
           )}
 
           <button
+            type="button"
             onClick={onToggle}
             className={cn(
-              'rounded-md border border-outline text-secondary hover:text-on-surface hover:bg-surface-low transition-colors',
+              'focus-ring rounded-md border border-outline text-secondary hover:text-on-surface hover:bg-surface-low transition-colors',
               collapsed ? 'w-6 h-6 bg-surface' : 'w-7 h-7'
             )}
             title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
@@ -62,8 +63,9 @@ export function SideNav({ collapsed, onToggle }: SideNavProps) {
               key={item.id}
               to={item.path}
               title={item.label}
+              aria-current={active ? 'page' : undefined}
               className={cn(
-                'relative flex items-center rounded-lg text-[13px] font-medium transition-colors',
+                'focus-ring relative flex items-center rounded-lg text-[13px] font-medium transition-colors',
                 collapsed ? 'justify-center px-1.5 py-2' : 'gap-2.5 px-2.5 py-1.5',
                 active
                   ? 'bg-surface-high text-primary font-semibold'
@@ -95,8 +97,9 @@ export function SideNav({ collapsed, onToggle }: SideNavProps) {
                 key={item.id}
                 to={item.path}
                 title={item.label}
+                aria-current={active ? 'page' : undefined}
                 className={cn(
-                  'flex items-center rounded-lg text-[13px] font-medium transition-colors',
+                  'focus-ring flex items-center rounded-lg text-[13px] font-medium transition-colors',
                   collapsed ? 'justify-center px-1.5 py-2' : 'gap-2.5 px-2.5 py-1.5',
                   active
                     ? 'bg-surface-high text-primary font-semibold'
@@ -118,7 +121,8 @@ export function SideNav({ collapsed, onToggle }: SideNavProps) {
           <select
             value={persona.id}
             onChange={e => setPersonaById(e.target.value as PersonaId)}
-            className="w-full text-[11px] bg-surface-low border border-outline rounded-md px-2 py-1 text-secondary focus:outline-none focus:ring-1 focus:ring-primary"
+            aria-label="Demo persona"
+            className="focus-ring w-full text-[11px] bg-surface-low border border-outline rounded-md px-2 py-1 text-secondary"
           >
             {PERSONAS.map(p => (
               <option key={p.id} value={p.id}>{p.role}</option>
@@ -128,7 +132,8 @@ export function SideNav({ collapsed, onToggle }: SideNavProps) {
           <select
             value={persona.id}
             onChange={e => setPersonaById(e.target.value as PersonaId)}
-            className="w-full text-[10px] bg-surface-low border border-outline rounded-md px-1.5 py-1 text-secondary focus:outline-none focus:ring-1 focus:ring-primary"
+            aria-label="Demo persona"
+            className="focus-ring w-full text-[10px] bg-surface-low border border-outline rounded-md px-1.5 py-1 text-secondary"
             title="Switch persona"
           >
             {PERSONAS.map(p => (

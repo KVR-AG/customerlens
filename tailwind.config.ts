@@ -30,8 +30,8 @@ const config: Config = {
         'ai-bg':          'var(--color-ai-bg)',
       },
       fontFamily: {
-        sans: ['Roboto'],
-        display: ['Poppins'],
+        sans: ['Roboto', 'Segoe UI', 'Arial', 'sans-serif'],
+        display: ['Poppins', 'Segoe UI', 'Arial', 'sans-serif'],
       },
       borderRadius: {
         card: '12px',

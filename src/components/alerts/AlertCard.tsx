@@ -3,9 +3,9 @@ import type { Alert, AlertSeverity } from '@/data/alerts'
 import { useNavigate } from 'react-router-dom'
 
 const SEVERITY_STYLES: Record<AlertSeverity, { dot: string; badge: string; label: string }> = {
-  critical: { dot: 'bg-negative', badge: 'badge-critical', label: '🔴 Critical' },
-  warning:  { dot: 'bg-warning',  badge: 'badge-warning',  label: '🟠 Warning'  },
-  watch:    { dot: 'bg-watch',    badge: 'bg-amber-50 text-amber-700 border border-amber-200', label: '🟡 Watch' },
+  critical: { dot: 'bg-negative', badge: 'badge-critical', label: 'Critical' },
+  warning:  { dot: 'bg-warning',  badge: 'badge-warning',  label: 'Warning'  },
+  watch:    { dot: 'bg-watch',    badge: 'bg-amber-50 text-amber-700 border border-amber-200', label: 'Watch' },
 }
 
 interface AlertCardProps {
@@ -47,20 +47,23 @@ export function AlertCard({ alert, compact = false }: AlertCardProps) {
       <div className="text-[11px] text-outline-strong">Scope: {alert.scope}</div>
       <div className="flex gap-2 mt-1">
         <button
+          type="button"
           onClick={() => navigate('/metrics')}
-          className="text-[11px] font-semibold text-primary hover:underline"
+          className="focus-ring text-[11px] font-semibold text-primary hover:underline"
         >
           Investigate →
         </button>
         <button
+          type="button"
           onClick={() => navigate('/actions')}
-          className="text-[11px] font-semibold text-on-surface-var hover:text-on-surface"
+          className="focus-ring text-[11px] font-semibold text-on-surface-var hover:text-on-surface"
         >
           Create Task
         </button>
         <button
+          type="button"
           onClick={() => navigate('/campaigns')}
-          className="text-[11px] font-semibold text-on-surface-var hover:text-on-surface"
+          className="focus-ring text-[11px] font-semibold text-on-surface-var hover:text-on-surface"
         >
           Suggest Campaign
         </button>
