@@ -99,21 +99,11 @@ function ParallaxSection({ children, id }: { children: ReactNode; id: string }) 
 }
 
 function HeroSection() {
-  const floatingStats = [
-    {
-      label: 'CA Revenue',
-      value: 'AED 139M',
-      delta: '+12.4%',
-      style: { top: '30%', left: '24px' },
-      tone: 'from-[#e8f2ff] to-[#f6faff]',
-    },
-    {
-      label: 'CA Conversion',
-      value: '34.8%',
-      delta: '+1.2pp',
-      style: { top: '80px', right: '24px' },
-      tone: 'from-[#fff0e8] to-[#fff8f4]',
-    },
+  const floatingCards = [
+    { label: 'CA Revenue',    value: 'AED 139M', delta: '↑ 12.4%', pos: 'top-1/4 left-16',      up: true  },
+    { label: 'Active Rate',   value: '42.1%',    delta: '↓ 1.4pp', pos: 'top-1/3 right-20',     up: false },
+    { label: 'CA Base',       value: '1.24M',    delta: '↑ 8.2%',  pos: 'bottom-1/3 left-24',   up: true  },
+    { label: 'CA Conversion', value: '34.8%',    delta: '↑ 1.2pp', pos: 'top-16 right-36',      up: true  },
   ]
 
   return (
@@ -138,17 +128,17 @@ function HeroSection() {
         }}
       />
 
-      {floatingStats.map((card, i) => (
+      {floatingCards.map((card, i) => (
         <motion.div
           key={card.label}
-          className={`absolute z-[12] rounded-xl px-4 py-3 border-2 border-[#9db9d9] bg-gradient-to-br ${card.tone} shadow-[0_16px_34px_rgba(18,41,70,0.24)]`}
-          style={card.style}
-          animate={{ y: [0, -3, 0] }}
-          transition={{ delay: i * 0.05, duration: 7 + i, repeat: Infinity, ease: 'easeInOut' }}
+          className={`absolute ${card.pos} bg-white/80 backdrop-blur-sm border border-[#c3d5eb] rounded-xl px-4 py-3 shadow-[0_10px_30px_rgba(18,41,70,0.14)]`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: [0, -6, 0] }}
+          transition={{ delay: i * 0.15, duration: 4 + i, repeat: Infinity, ease: 'easeInOut' }}
         >
           <div className="text-[18px] font-bold text-[#0f223b] tabular-nums">{card.value}</div>
-          <div className="text-[10px] text-[#3f536f] uppercase tracking-wider">{card.label}</div>
-          <div className={`text-[11px] font-semibold mt-0.5 ${i % 2 === 0 ? 'text-[#0058bc]' : 'text-[#7a45d3]'}`}>
+          <div className="text-[10px] text-[#4a6080] uppercase tracking-wider">{card.label}</div>
+          <div className="text-[11px] font-semibold mt-0.5" style={{ color: card.up ? '#16a34a' : '#ef4444' }}>
             {card.delta}
           </div>
         </motion.div>
@@ -176,12 +166,12 @@ function HeroSection() {
 
 function MetricsSection() {
   const metrics = [
-    { label: 'Apparel Revenue', value: 'AED 203M', delta: '+10.2%', accent: '#0058bc', deltaColor: 'text-[#1f3957]' },
-    { label: 'CA Revenue %', value: '68.4%', delta: '+3.1pp', accent: '#7a45d3', deltaColor: 'text-[#3a3f78]' },
-    { label: 'CA Base Members', value: '1.24M', delta: '+8.2%', accent: '#008a79', deltaColor: 'text-[#1f4a56]' },
-    { label: 'Active Rate', value: '42.1%', delta: '-1.4pp', accent: '#db7a00', deltaColor: 'text-[#7a4d19]' },
-    { label: 'CA Conversion', value: '34.8%', delta: '+1.2pp', accent: '#006fa6', deltaColor: 'text-[#204c72]' },
-    { label: 'Points Liability', value: 'AED 2.84M', delta: '+5.3%', accent: '#c2478a', deltaColor: 'text-[#6f2f56]' },
+    { label: 'Apparel Revenue', value: 'AED 203M', delta: '+10.2%', up: true  },
+    { label: 'CA Revenue %',    value: '68.4%',     delta: '+3.1pp', up: true  },
+    { label: 'CA Base Members', value: '1.24M',     delta: '+8.2%',  up: true  },
+    { label: 'Active Rate',     value: '42.1%',     delta: '-1.4pp', up: false },
+    { label: 'CA Conversion',   value: '34.8%',     delta: '+1.2pp', up: true  },
+    { label: 'Points Liability',value: 'AED 2.84M', delta: '+5.3%',  up: true  },
   ]
 
   return (
@@ -205,12 +195,10 @@ function MetricsSection() {
             transition={{ delay: i * 0.08, duration: 0.45 }}
             viewport={{ once: true }}
             className="bg-white/82 border border-[#cdd9ea] rounded-xl p-4 backdrop-blur-[2px]"
-            style={{ boxShadow: `0 10px 26px ${m.accent}1f` }}
           >
-            <div className="h-1.5 rounded-full mb-3" style={{ backgroundColor: m.accent }} />
             <div className="text-[20px] font-bold text-[#0f223b] tabular-nums">{m.value}</div>
             <div className="text-[10px] text-[#3f536f] uppercase tracking-wider mt-0.5">{m.label}</div>
-            <div className={`text-[12px] font-semibold mt-1 ${m.deltaColor}`}>
+            <div className="text-[12px] font-semibold mt-1" style={{ color: m.up ? '#16a34a' : '#ef4444' }}>
               {m.delta} vs LY
             </div>
           </motion.div>
