@@ -23,28 +23,21 @@ export function SideNav({ collapsed, onToggle }: SideNavProps) {
       {/* Brand */}
       <div className={cn('relative py-3 border-b border-outline/40', collapsed ? 'px-2' : 'px-4')}>
         <div className={cn('flex items-center', collapsed ? 'justify-between' : 'justify-between')}>
-          {!collapsed ? (
+          {!collapsed && (
             <div>
               <div className="text-[15px] font-bold tracking-tight text-on-surface font-display">Customer Lens</div>
               <div className="text-[10px] font-semibold uppercase tracking-widest text-outline-strong mt-0.5">
                 Enterprise Analytics
               </div>
             </div>
-          ) : (
-            <div
-              className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white text-[11px] font-bold"
-              title="Customer Lens"
-            >
-              CL
-            </div>
-          )}
+          ) }
 
           <button
             type="button"
             onClick={onToggle}
             className={cn(
               'focus-ring rounded-md border border-outline text-secondary hover:text-on-surface hover:bg-surface-low transition-colors',
-              collapsed ? 'w-6 h-6 bg-surface' : 'w-7 h-7'
+              collapsed ? 'w-6 h-6 bg-surface ml-4' : 'w-7 h-7'
             )}
             title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
