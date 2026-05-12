@@ -45,7 +45,7 @@ export function ActionQueuePage() {
       <TopBar title="Action Queue" period={period} onPeriodChange={setPeriod} />
 
       {/* Filter bar */}
-      <div className="border-b border-outline bg-surface px-6 py-2.5 flex items-center gap-2 flex-shrink-0">
+      <div className="border-b border-outline bg-surface px-4 py-2.5 flex flex-wrap items-center gap-2 flex-shrink-0">
         {[['all', 'All'], ['open', 'Open'], ['in_progress', 'In Progress'], ['done', 'Done']].map(([v, l]) => (
           <button
             type="button"

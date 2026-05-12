@@ -19,6 +19,7 @@ export function MetricsExplorerPage() {
   const [activeTab, setActiveTab] = useState<Domain>(METRIC_DOMAINS[0])
   const [view, setView] = useState<'summary' | 'deep-dive'>('summary')
   const [notice, setNotice] = useState<string | null>(null)
+  const [filterOpen, setFilterOpen] = useState(false)
 
   const loyaltyQuery = useLoyaltyMetrics()
   const retailQuery = useRetailMetrics()
@@ -39,9 +40,26 @@ export function MetricsExplorerPage() {
         primaryAction={{ label: '+ New Filter', onClick: () => showNotice('Saved filter composer opens in full workspace mode') }}
       />
 
-      <div className="flex flex-1 overflow-hidden">
-        {/* Left filter panel */}
-        <aside className="w-[260px] flex-shrink-0 bg-surface border-r border-outline overflow-y-auto p-4 space-y-5">
+      <div className="flex flex-1 overflow-hidden relative">
+        {/* Mobile filter backdrop */}
+        {filterOpen && (
+          <div
+            className="fixed inset-0 z-30 bg-black/40 lg:hidden"
+            onClick={() => setFilterOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+
+        {/* Left filter panel — desktop always visible, mobile slide-in drawer */}
+        <aside className={cn(
+          'flex-shrink-0 bg-surface border-r border-outline overflow-y-auto p-4 space-y-5 transition-transform duration-200',
+          'fixed inset-y-0 left-0 z-40 w-[260px] lg:static lg:translate-x-0',
+          filterOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        )}>
+          <div className="flex items-center justify-between lg:hidden mb-2">
+            <span className="text-[13px] font-bold text-on-surface">Filters</span>
+            <button type="button" onClick={() => setFilterOpen(false)} className="focus-ring text-secondary text-[18px] w-7 h-7 flex items-center justify-center rounded-md hover:bg-surface-low">✕</button>
+          </div>
           <FilterPanel />
         </aside>
 
@@ -69,7 +87,15 @@ export function MetricsExplorerPage() {
           </div>
 
           {/* View toggle */}
-          <div className="flex items-center gap-2 px-5 py-2 border-b border-outline/40 bg-surface-low/50 flex-shrink-0">
+          <div className="flex items-center gap-2 px-4 py-2 border-b border-outline/40 bg-surface-low/50 flex-shrink-0">
+            {/* Mobile Filters button */}
+            <button
+              type="button"
+              onClick={() => setFilterOpen(true)}
+              className="focus-ring lg:hidden h-7 px-3 rounded-lg text-[11px] font-semibold border border-outline text-on-surface bg-surface hover:bg-surface-low transition-colors"
+            >
+              ⚙ Filters
+            </button>
             <span className="text-[11px] text-outline-strong">View:</span>
             {(['summary', 'deep-dive'] as const).map(v => (
               <button
@@ -281,7 +307,7 @@ function DomainContent({ tab, view, loyalty, retail, rfm, demo, cx, loadingByDom
 function MetricGrid({ metrics, view }: { metrics: any[]; view: string }) {
   if (view === 'summary') {
     return (
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {metrics.filter(Boolean).map((m, i) => (
           <MetricCard key={i} metric={m} />
         ))}
@@ -311,7 +337,7 @@ function MetricCard({ metric }: { metric: any }) {
   return (
     <div className="card p-4 space-y-2">
       <div className="text-[11px] font-semibold uppercase tracking-wider text-outline-strong">{metric.label}</div>
-      <div className="metric-value text-[24px] text-on-surface">{formatted}</div>
+      <div className="metric-value text-[20px] md:text-[24px] text-on-surface">{formatted}</div>
       <div className={cn('text-[12px] font-medium', isPos ? 'delta-positive' : 'delta-negative')}>
         {delta >= 0 ? '+' : ''}{delta.toFixed(1)}{metric.comparison.unit === 'pp' ? 'pp' : '%'} vs LY LFL
       </div>
@@ -340,7 +366,7 @@ function MetricDeepDive({ metric }: { metric: any }) {
       <div className="flex items-start gap-4 mb-4">
         <div>
           <div className="text-[12px] font-semibold uppercase tracking-wider text-outline-strong mb-1">{metric.label}</div>
-          <div className="metric-value text-[32px] text-on-surface">{formatted}</div>
+          <div className="metric-value text-[24px] md:text-[32px] text-on-surface">{formatted}</div>
           <div className={cn('text-[13px] font-medium mt-1', isPos ? 'delta-positive' : 'delta-negative')}>
             {metric.comparison.lyLflDelta >= 0 ? '+' : ''}{metric.comparison.lyLflDelta.toFixed(1)}
             {metric.comparison.unit === 'pp' ? 'pp' : '%'} vs LY LFL
@@ -377,7 +403,7 @@ function RFMTab({ rfm }: { rfm: any[] }) {
     <div className="space-y-5">
       <div className="card p-4">
         <h3 className="text-[13px] font-semibold text-on-surface mb-3">Segment Distribution</h3>
-        <div className="grid grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {rfm.map(seg => (
             <div key={seg.name} className="bg-surface-low rounded-xl p-3 text-center">
               <div className="text-[20px] font-bold tabular-nums" style={{ color: RFM_SEGMENT_COLORS[seg.name] }}>
@@ -417,7 +443,7 @@ function RFMTab({ rfm }: { rfm: any[] }) {
 
 function DemographicsTab({ demo }: { demo: any }) {
   return (
-    <div className="grid grid-cols-2 gap-5">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
       <div className="card p-4">
         <h3 className="text-[13px] font-semibold mb-3">Gender Split</h3>
         <ResponsiveContainer width="100%" height={200}>
@@ -445,7 +471,7 @@ function DemographicsTab({ demo }: { demo: any }) {
         </ResponsiveContainer>
       </div>
 
-      <div className="card p-4 col-span-2">
+      <div className="card p-4 col-span-1 sm:col-span-2">
         <h3 className="text-[13px] font-semibold mb-3">Top Nationalities</h3>
         <ResponsiveContainer width="100%" height={180}>
           <BarChart data={demo.topNationalities} layout="vertical">
@@ -465,27 +491,27 @@ function CXTab({ cx }: { cx: any }) {
   const npsData = cx.nps.trend.map((v: number, i: number) => ({ month: `M${i + 1}`, nps: v }))
 
   return (
-    <div className="grid grid-cols-3 gap-5">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
       <div className="card p-5 text-center">
         <div className="text-[11px] font-bold uppercase tracking-wider text-outline-strong mb-1">NPS Score</div>
-        <div className="text-[48px] font-black tabular-nums text-on-surface">{cx.nps.value}</div>
+        <div className="text-[32px] md:text-[48px] font-black tabular-nums text-on-surface">{cx.nps.value}</div>
         <div className="text-[12px] text-outline-strong">Net Promoter Score</div>
         <div className="mt-2 text-[12px] font-semibold delta-positive">+4 vs LY</div>
       </div>
       <div className="card p-5 text-center">
         <div className="text-[11px] font-bold uppercase tracking-wider text-outline-strong mb-1">CSAT</div>
-        <div className="text-[48px] font-black tabular-nums text-on-surface">{cx.csat.value}<span className="text-[24px] text-outline-strong">/5</span></div>
+        <div className="text-[32px] md:text-[48px] font-black tabular-nums text-on-surface">{cx.csat.value}<span className="text-[20px] md:text-[24px] text-outline-strong">/5</span></div>
         <div className="text-[12px] text-outline-strong">Customer Satisfaction</div>
         <div className="mt-2 text-[12px] font-semibold delta-positive">+0.2 vs LY</div>
       </div>
       <div className="card p-5 text-center">
         <div className="text-[11px] font-bold uppercase tracking-wider text-outline-strong mb-1">CES</div>
-        <div className="text-[48px] font-black tabular-nums text-on-surface">{cx.ces.value}<span className="text-[24px] text-outline-strong">/5</span></div>
+        <div className="text-[32px] md:text-[48px] font-black tabular-nums text-on-surface">{cx.ces.value}<span className="text-[20px] md:text-[24px] text-outline-strong">/5</span></div>
         <div className="text-[12px] text-outline-strong">Customer Effort Score</div>
         <div className="mt-2 text-[12px] font-semibold delta-positive">+0.1 vs LY</div>
       </div>
 
-      <div className="card p-4 col-span-2">
+      <div className="card p-4 col-span-1 sm:col-span-2">
         <h3 className="text-[13px] font-semibold mb-3">NPS Trend (12 months)</h3>
         <ResponsiveContainer width="100%" height={150}>
           <LineChart data={npsData}>

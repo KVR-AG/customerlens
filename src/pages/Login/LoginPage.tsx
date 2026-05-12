@@ -109,7 +109,7 @@ function HeroSection() {
       {floatingCards.map((card, i) => (
         <motion.div
           key={card.label}
-          className={`absolute ${card.pos} bg-white/80 backdrop-blur-sm border border-[#c3d5eb] rounded-xl px-4 py-3 shadow-[0_10px_30px_rgba(18,41,70,0.14)]`}
+          className={`hidden md:block absolute ${card.pos} bg-white/80 backdrop-blur-sm border border-[#c3d5eb] rounded-xl px-4 py-3 shadow-[0_10px_30px_rgba(18,41,70,0.14)]`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: [0, -6, 0] }}
           transition={{ delay: i * 0.15, duration: 4 + i, repeat: Infinity, ease: 'easeInOut' }}
@@ -130,7 +130,7 @@ function HeroSection() {
           </div>
           <span className="text-[15px] font-bold text-[#0f223b]">Customer Lens</span>
         </div>
-        <h1 className="text-[64px] font-black tracking-tight leading-none text-[#0f223b] mb-4">
+        <h1 className="text-[40px] md:text-[64px] font-black tracking-tight leading-none text-[#0f223b] mb-4">
           Customer
           <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0058bc] to-[#2f7fdd]">Lens</span>
@@ -175,14 +175,14 @@ function MetricsSection() {
     <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden" style={{ background: '#ffffff' }}>
       <div className="text-center mb-10">
         <div className="text-[11px] font-bold uppercase tracking-widest text-[#0058bc] mb-2">Metrics Explorer</div>
-        <h2 className="text-[40px] font-black tracking-tight text-[#0f223b] leading-tight">
+        <h2 className="text-[28px] md:text-[40px] font-black tracking-tight text-[#0f223b] leading-tight">
           See everything,
           <br />
           across every brand.
         </h2>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 max-w-2xl w-full px-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl w-full px-8">
         {metrics.map((m, i) => (
           <motion.div
             key={m.label}
@@ -221,7 +221,7 @@ function CampaignsSection() {
 
       <div className="text-center mb-10">
         <div className="text-[11px] font-bold uppercase tracking-widest text-[#0058bc] mb-2">Campaign Builder</div>
-        <h2 className="text-[40px] font-black tracking-tight text-[#0f223b] leading-tight">
+        <h2 className="text-[28px] md:text-[40px] font-black tracking-tight text-[#0f223b] leading-tight">
           From insight
           <br />
           to action in minutes.
@@ -241,7 +241,7 @@ function CampaignsSection() {
             <div className="text-[11px] font-bold uppercase tracking-widest text-[#0058bc] mb- 3">Campaign Builder</div>
             <div className="text-[11px] font-semibold text-[#0f223b] mb-3">Dubai Gold + Black — Re-engagement</div>
           </div>
-          <div className="flex gap-1.5 mb-3">
+          <div className="flex flex-wrap gap-1.5 mb-3">
             {[
               { label: 'Basics',   done: true },
               { label: 'Audience', done: true },
@@ -385,7 +385,7 @@ function AISection() {
     <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-12" style={{ background: '#ffffff' }}>
       <div className="text-center mb-7">
         <div className="text-[11px] font-bold uppercase tracking-widest text-[#1f3957] mb-2">AI Intelligence</div>
-        <h2 className="text-[40px] font-black tracking-tight text-[#0f223b] leading-tight">
+        <h2 className="text-[28px] md:text-[40px] font-black tracking-tight text-[#0f223b] leading-tight">
           Flags what matters,
           <br />
           before you ask.
@@ -393,7 +393,7 @@ function AISection() {
       </div>
 
       {/* Live summary bar */}
-      <div className="flex items-center gap-3 mb-5 bg-white/70 border border-[#cdd9ea] rounded-full px-4 py-1.5 backdrop-blur-sm">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-5 bg-white/70 border border-[#cdd9ea] rounded-full px-4 py-1.5 backdrop-blur-sm">
         <span className="flex items-center gap-1.5 text-[11px] font-semibold text-[#0f223b]">
           <span className="w-2 h-2 rounded-full bg-[#e05400] inline-block" style={{ boxShadow: '0 0 0 3px rgba(224,84,0,0.2)' }} />
           3 active alerts

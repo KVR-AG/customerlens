@@ -46,24 +46,23 @@ export function CalendarPage() {
       />
 
       {/* Controls */}
-      <div className="border-b border-outline bg-surface px-6 py-2.5 flex items-center gap-4 flex-shrink-0">
+      <div className="border-b border-outline bg-surface px-4 py-2.5 flex flex-wrap items-center gap-2 flex-shrink-0">
         <button type="button" onClick={() => setMonth(m => m === 0 ? (setYear(y => y - 1), 11) : m - 1)} className="focus-ring text-[18px] text-secondary hover:text-on-surface w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-low">‹</button>
-        <div className="text-[14px] font-semibold text-on-surface min-w-[140px] text-center">
+        <div className="text-[14px] font-semibold text-on-surface min-w-[120px] text-center">
           {MONTHS[month]} {year}
         </div>
         <button type="button" onClick={() => setMonth(m => m === 11 ? (setYear(y => y + 1), 0) : m + 1)} className="focus-ring text-[18px] text-secondary hover:text-on-surface w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-low">›</button>
-        <div className="flex-1" />
         {notice && <span className="text-[11px] text-primary font-medium">{notice}</span>}
 
-        {/* Filter chips */}
-        <div className="flex gap-1.5">
+        {/* Filter chips — scrollable on mobile */}
+        <div className="flex gap-1.5 overflow-x-auto ml-auto">
           {['All Channels', 'All Brands', 'All Statuses'].map(f => (
             <button
               type="button"
               key={f}
               onClick={() => handleDemoFilter(f)}
               className={cn(
-                'focus-ring text-[11px] px-3 py-1 rounded-full border transition-colors',
+                'focus-ring text-[11px] px-3 py-1 rounded-full border transition-colors whitespace-nowrap flex-shrink-0',
                 activeFilter === f
                   ? 'bg-primary text-white border-primary'
                   : 'border-outline text-secondary hover:bg-surface-low'
@@ -76,6 +75,8 @@ export function CalendarPage() {
       </div>
 
       <div className="flex-1 overflow-y-auto p-4">
+        <div className="overflow-x-auto">
+        <div style={{ minWidth: '560px' }}>
         {/* Day headers */}
         <div className="grid grid-cols-7 mb-1">
           {DAYS.map(d => (
@@ -89,7 +90,7 @@ export function CalendarPage() {
         <div className="grid grid-cols-7 gap-px bg-outline/30 rounded-xl overflow-hidden border border-outline/30">
           {/* Empty cells for first week */}
           {Array.from({ length: firstDay }).map((_, i) => (
-            <div key={`empty-${i}`} className="bg-surface-low min-h-[100px]" />
+            <div key={`empty-${i}`} className="bg-surface-low min-h-[64px] md:min-h-[100px]" />
           ))}
 
           {/* Day cells */}
@@ -101,7 +102,7 @@ export function CalendarPage() {
             return (
               <div
                 key={day}
-                className="bg-surface min-h-[100px] p-1.5 relative hover:bg-surface-low/50 transition-colors"
+                className="bg-surface min-h-[64px] md:min-h-[100px] p-1.5 relative hover:bg-surface-low/50 transition-colors"
               >
                 <div className={cn(
                   'text-[12px] font-semibold w-6 h-6 flex items-center justify-center rounded-full mb-1',
@@ -132,6 +133,9 @@ export function CalendarPage() {
             )
           })}
         </div>
+
+        </div>{/* end min-width wrapper */}
+        </div>{/* end overflow-x-auto */}
 
         {/* Legend */}
         <div className="mt-4 flex flex-wrap gap-3">
