@@ -124,12 +124,12 @@ function HeroSection() {
 
       <div className="relative z-10 text-center">
         {/* Brand mark inline on hero */}
-        <div className="flex items-center justify-center gap-2 mb-6">
+        {/* <div className="flex items-center justify-center gap-2 mb-6">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0058bc] to-[#2b8cff] flex items-center justify-center text-[11px] font-bold text-white shadow-[0_4px_14px_rgba(0,88,188,0.35)]">
             CL
           </div>
           <span className="text-[15px] font-bold text-[#0f223b]">Customer Lens</span>
-        </div>
+        </div> */}
         <h1 className="text-[40px] md:text-[64px] font-black tracking-tight leading-none text-[#0f223b] mb-4">
           Customer
           <br />
@@ -172,8 +172,8 @@ function MetricsSection() {
   ]
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden" style={{ background: '#ffffff' }}>
-      <div className="text-center mb-10">
+    <div className="relative w-full h-full flex flex-col items-center overflow-y-auto" style={{ background: '#ffffff' }}>
+      <div className="text-center pt-10 pb-6 px-8 sticky top-0 z-10 w-full" style={{ background: '#ffffff' }}>
         <div className="text-[11px] font-bold uppercase tracking-widest text-[#0058bc] mb-2">Metrics Explorer</div>
         <h2 className="text-[28px] md:text-[40px] font-black tracking-tight text-[#0f223b] leading-tight">
           See everything,
@@ -182,7 +182,7 @@ function MetricsSection() {
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl w-full px-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl w-full px-8 pb-10">
         {metrics.map((m, i) => (
           <motion.div
             key={m.label}
