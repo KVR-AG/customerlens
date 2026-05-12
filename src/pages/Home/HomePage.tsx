@@ -143,7 +143,7 @@ export function HomePage() {
 
         {/* Store League Table (CEO / Country Head) */}
         {showLeague && stores && (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <StoreTable title="Top Performers" stores={topStores} />
             <StoreTable title="Needs Attention" stores={bottomStores} />
           </div>
@@ -181,7 +181,7 @@ export function HomePage() {
         {persona.id === 'clo' && pendingCampaigns.length > 0 && (
           <button
             type="button"
-            className="focus-ring w-full flex items-center gap-3 rounded-xl px-5 py-4 text-white cursor-pointer hover:opacity-90 transition-opacity text-left bg-primary"
+            className="focus-ring w-full flex flex-col sm:flex-row items-start sm:items-center gap-3 rounded-xl px-5 py-4 text-white cursor-pointer hover:opacity-90 transition-opacity text-left bg-primary"
             onClick={() => navigate('/campaigns')}
           >
             <span className="w-2.5 h-2.5 rounded-full bg-white/80" aria-hidden="true" />
@@ -193,7 +193,7 @@ export function HomePage() {
                 {pendingCampaigns.map(c => c.brand).join(' · ')} — avg SLA 38h
               </div>
             </div>
-            <div className="ml-auto bg-white/20 rounded-lg px-4 py-1.5 text-[12px] font-semibold">
+            <div className="sm:ml-auto bg-white/20 rounded-lg px-4 py-1.5 text-[12px] font-semibold">
               View Queue →
             </div>
           </button>
