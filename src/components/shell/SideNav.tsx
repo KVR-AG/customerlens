@@ -25,7 +25,7 @@ export function SideNav({ collapsed, onToggle }: SideNavProps) {
         <div className={cn('flex items-center', collapsed ? 'justify-between' : 'justify-between')}>
           {!collapsed ? (
             <div>
-              <div className="text-[15px] font-bold tracking-tight text-on-surface">Customer Lens</div>
+              <div className="text-[15px] font-bold tracking-tight text-on-surface font-display">Customer Lens</div>
               <div className="text-[10px] font-semibold uppercase tracking-widest text-outline-strong mt-0.5">
                 Enterprise Analytics
               </div>

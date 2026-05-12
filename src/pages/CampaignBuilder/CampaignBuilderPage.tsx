@@ -410,16 +410,18 @@ function StepReview({ form }: any) {
       <div className="bg-green-50 border border-green-200 rounded-xl p-3 text-[12px] text-green-800 font-medium">
         ✓ Ready to submit. The Central CRM team will review within 48 hours.
       </div>
-      <table className="w-full text-[13px]">
+      <div className="table-surface">
+      <table className="data-table w-full">
         <tbody>
           {items.map(([k, v]) => (
-            <tr key={k} className="border-b border-surface-low">
-              <td className="py-2 pr-4 text-outline-strong font-medium w-40">{k}</td>
-              <td className="py-2 text-on-surface">{v}</td>
+            <tr key={k}>
+              <td className="text-outline-strong font-medium w-40">{k}</td>
+              <td className="text-on-surface">{v}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   )
 }

@@ -170,26 +170,28 @@ function StoreTable({ title, stores }: { title: string; stores: any[] }) {
   return (
     <div className="card p-4">
       <h3 className="text-[13px] font-semibold text-on-surface mb-3">{title}</h3>
-      <table className="w-full text-[12px]">
+      <div className="table-surface">
+      <table className="data-table w-full">
         <thead>
-          <tr className="border-b border-outline/40">
-            <th className="text-left text-outline-strong font-medium pb-2">Store</th>
-            <th className="text-right text-outline-strong font-medium pb-2">Sales</th>
-            <th className="text-right text-outline-strong font-medium pb-2">vs LY</th>
+          <tr>
+            <th>Store</th>
+            <th className="text-right">Sales</th>
+            <th className="text-right">vs LY</th>
           </tr>
         </thead>
         <tbody>
           {stores.map(s => (
-            <tr key={s.store} className="border-b border-surface-low/60 last:border-0">
-              <td className="py-2 text-on-surface-var truncate max-w-[180px]">{s.store}</td>
-              <td className="py-2 text-right text-on-surface tabular-nums">{formatAED(s.salesAed, true)}</td>
-              <td className={cn('py-2 text-right tabular-nums font-semibold', s.salesVsLy >= 0 ? 'delta-positive' : 'delta-negative')}>
+            <tr key={s.store}>
+              <td className="truncate max-w-[180px]">{s.store}</td>
+              <td className="text-right num">{formatAED(s.salesAed, true)}</td>
+              <td className={cn('text-right num', s.salesVsLy >= 0 ? 'delta-positive' : 'delta-negative')}>
                 {s.salesVsLy >= 0 ? '+' : ''}{formatPct(s.salesVsLy)}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   )
 }

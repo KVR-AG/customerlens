@@ -76,8 +76,8 @@ function UserManagement() {
           + Invite User
         </button>
       </div>
-      <div className="card overflow-hidden">
-        <table className="w-full text-[12px]">
+      <div className="card overflow-hidden table-surface">
+        <table className="data-table w-full">
           <thead>
             <tr className="border-b border-outline bg-surface-low">
               <th className="text-left p-3 text-outline-strong font-semibold">Name</th>
@@ -128,8 +128,8 @@ function RBACTab() {
   return (
     <div>
       <h2 className="text-[15px] font-bold text-on-surface mb-4">Role Permissions Matrix</h2>
-      <div className="card overflow-x-auto">
-        <table className="text-[12px]">
+      <div className="card overflow-x-auto table-surface">
+        <table className="data-table">
           <thead>
             <tr className="border-b border-outline bg-surface-low">
               <th className="text-left p-3 text-outline-strong font-semibold min-w-[180px]">Role</th>
@@ -202,8 +202,8 @@ function AlertThresholdsTab() {
   return (
     <div>
       <h2 className="text-[15px] font-bold text-on-surface mb-4">Alert Threshold Defaults</h2>
-      <div className="card overflow-hidden">
-        <table className="w-full text-[12px]">
+      <div className="card overflow-hidden table-surface">
+        <table className="data-table w-full">
           <thead>
             <tr className="border-b border-outline bg-surface-low">
               {['Metric', 'Threshold', 'Severity', 'Auto-create Task'].map(h => (
@@ -254,8 +254,8 @@ function AuditLogTab() {
           Export CSV
         </button>
       </div>
-      <div className="card overflow-hidden">
-        <table className="w-full text-[12px]">
+      <div className="card overflow-hidden table-surface">
+        <table className="data-table w-full">
           <thead>
             <tr className="border-b border-outline bg-surface-low">
               {['Timestamp', 'User', 'Action', 'IP'].map(h => (

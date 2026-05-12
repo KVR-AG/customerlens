@@ -31,7 +31,7 @@ export function TopBar({
 
   return (
     <header className="h-[52px] bg-surface border-b border-outline flex items-center px-6 gap-3 flex-shrink-0">
-      <div className="text-[15px] font-bold text-on-surface tracking-tight">
+      <div className="text-[15px] font-bold text-on-surface tracking-tight font-display">
         {title ?? `${greeting()}, ${persona.name.split(' ')[0]}`}
       </div>
 
