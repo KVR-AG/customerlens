@@ -476,13 +476,22 @@ function DashboardBg() {
         transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
       />
 
-      <div className="absolute inset-0 opacity-65 flex justify-center pt-20">
-        <div className="grid grid-cols-4 gap-3 w-full max-w-[760px] px-8">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="bg-white/75 border border-[#d2d9e4] rounded-xl h-24 shadow-[0_2px_8px_rgba(22,42,66,0.05)]" />
-          ))}
-        </div>
-      </div>
+      {/* Grid matrix — same pattern as hero screen */}
+      <div
+        className="absolute inset-0 opacity-50"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(0,88,188,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,88,188,0.08) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+        }}
+      />
+      {/* Subtle dot at each intersection */}
+      <div
+        className="absolute inset-0 opacity-30"
+        style={{
+          backgroundImage: 'radial-gradient(circle, rgba(0,88,188,0.25) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+        }}
+      />
 
       <div className="absolute bottom-0 left-0 right-0 h-72 bg-gradient-to-t from-[var(--color-background)] via-[var(--color-background)]/90 to-transparent" />
     </div>
@@ -493,59 +502,82 @@ function LoginCard({ onLogin }: { onLogin: () => void }) {
   return (
     <motion.div
       whileHover={{ y: -2 }}
-      className="rounded-3xl p-7 border border-outline shadow-[0_24px_70px_rgba(8,28,52,0.15)] bg-[var(--color-surface)]"
+      className="rounded-3xl border shadow-[0_32px_80px_rgba(8,28,52,0.18)]"
       style={{
-        background: 'linear-gradient(170deg, rgba(255,255,255,0.96) 0%, rgba(247,250,255,0.98) 100%)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
+        background: 'linear-gradient(170deg, rgba(255,255,255,0.97) 0%, rgba(245,250,255,0.99) 100%)',
+        borderColor: '#dce6f5',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
       }}
     >
-      <div className="relative mb-6">
-        <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-24 h-24 rounded-full blur-2xl bg-[#0058bc]/25 pointer-events-none" />
-        <div className="relative flex items-center justify-center">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0058bc] to-[#2e8dff] flex items-center justify-center text-[15px] font-extrabold text-white shadow-[0_10px_26px_rgba(0,88,188,0.35)]">
+      {/* Top brand band */}
+      <div className="px-8 pt-9 pb-7 text-center border-b" style={{ borderColor: '#eaf0f9' }}>
+        <div className="relative inline-flex mb-4">
+          <div className="absolute -inset-2 rounded-2xl blur-xl opacity-30" style={{ background: '#0058bc' }} />
+          {/* <div
+            className="relative w-14 h-14 rounded-2xl flex items-center justify-center text-[17px] font-extrabold text-white"
+            style={{ background: 'linear-gradient(135deg, #0058bc 0%, #2e8dff 100%)', boxShadow: '0 12px 28px rgba(0,88,188,0.38)' }}
+          >
             CL
-          </div>
+          </div> */}
+        </div>
+        <h2 className="text-[22px] font-extrabold tracking-tight" style={{ color: '#0a1f3b' }}>
+          Customer Lens
+        </h2>
+        <p className="text-[12px] mt-1.5 font-medium" style={{ color: '#5a7496' }}>
+          Club Apparel Group · Unified Intelligence Platform
+        </p>
+        {/* <div className="flex items-center justify-center gap-2 mt-4">
+          {['#0058bc','#7a45d3','#008a79','#db7a00','#c2478a'].map((c, i) => (
+            <div key={i} className="w-2 h-2 rounded-full" style={{ background: c, opacity: 0.65 }} />
+          ))}
+        </div> */}
+      </div>
+
+      {/* Sign-in body */}
+      <div className="px-8 pt-6 pb-6" style={{ paddingTop: '20px' }}>
+        <p className="text-[12px] mb-5 text-center" style={{ color: '#5a7496' }}>
+          Use your organization account to continue
+        </p>
+
+        <motion.button
+          type="button"
+          whileHover={{ scale: 1.015 }}
+          whileTap={{ scale: 0.985 }}
+          onClick={onLogin}
+          className="focus-ring w-full rounded-xl flex items-center justify-center gap-3 text-[14px] font-bold text-white transition-all"
+          style={{ background: 'linear-gradient(135deg, #0052b0 0%, #0074e8 100%)', boxShadow: '0 10px 28px rgba(0,88,188,0.32)', height: '50px' }}
+        >
+          <MicrosoftIcon />
+          Continue with Microsoft
+        </motion.button>
+
+        {/* Trust badges */}
+        <div className="mt-4 grid grid-cols-3 gap-2 mb-3">
+          {[
+            { icon: '🔒', label: 'Secure SSO' },
+            { icon: '👤', label: 'Role-based' },
+            { icon: '📋', label: 'Audit logs' },
+          ].map(b => (
+            <div
+              key={b.label}
+              className="flex flex-col items-center gap-1.5 rounded-xl border text-center"
+              style={{ background: '#f6f9ff', borderColor: '#dce6f5', paddingTop: '10px', paddingBottom: '10px' }}
+            >
+              <span style={{ fontSize: '15px' }}>{b.icon}</span>
+              <span className="text-[9px] font-semibold uppercase tracking-wide" style={{ color: '#5a7496' }}>{b.label}</span>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="text-center">
-        <h2 className="text-[20px] font-bold text-on-surface tracking-tight">Welcome to Customer Lens</h2>
-        <p className="text-[12px] text-outline-strong mt-1">Centralized analytics for Club Apparel</p>
-      </div>
-
-      <div className="mt-6 mb-5 h-px bg-gradient-to-r from-transparent via-outline to-transparent" />
-
-      <div className="mb-4">
-        <div className="text-[15px] font-semibold text-on-surface">Sign in</div>
-        <p className="text-[12px] text-outline-strong mt-0.5">Use your organization account to continue</p>
-      </div>
-
-      <motion.button
-        type="button"
-        whileHover={{ scale: 1.01 }}
-        whileTap={{ scale: 0.985 }}
-        onClick={onLogin}
-        className="focus-ring w-full h-11 rounded-xl flex items-center justify-center gap-3 text-[13px] font-semibold text-white transition-all shadow-[0_10px_28px_rgba(0,88,188,0.32)]"
-        style={{ background: 'linear-gradient(135deg, #0058bc, #0070eb)' }}
-      >
-        <MicrosoftIcon />
-        Continue with Microsoft
-      </motion.button>
-
-      <div className="mt-4 rounded-xl border border-outline bg-surface-low px-3 py-2.5">
-        <div className="flex items-center justify-between text-[11px] text-outline-strong">
-          <span>Secure SSO</span>
-          <span>Role-based access</span>
-          <span>Audit logging</span>
-        </div>
-      </div>
-
-      <p className="text-[10px] text-outline-strong text-center mt-4 leading-relaxed">
-        Access is managed by your organization.
-        <br />
-        Contact IT Admin for help.
-      </p>
+      {/* Footer */}
+      {/* <div className="px-8 pb-6 text-center">
+        <p className="text-[10px] leading-relaxed" style={{ color: '#8fa4be' }}>
+          Access is managed by your IT organization.{' '}
+          <span className="font-semibold" style={{ color: '#5a7496' }}>Contact IT Admin</span> for help.
+        </p>
+      </div> */}
     </motion.div>
   )
 }
