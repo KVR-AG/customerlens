@@ -34,29 +34,7 @@ export function LoginPage() {
         transition={{ duration: 0.35, ease: 'easeOut' }}
       />
 
-      <div className="fixed top-0 left-0 right-0 z-[60] h-[2px] bg-[#0f223b]/10">
-        <motion.div className="h-full bg-gradient-to-r from-[#0058bc] via-[#4a9eff] to-[#9dc8ff]" style={{ width: progressWidth }} />
-      </div>
 
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-4 backdrop-blur-md bg-white/70 border-b border-[#c7d2e3]">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-md bg-gradient-to-br from-[#0058bc] to-[#2b8cff] flex items-center justify-center text-[11px] font-bold text-white shadow-[0_0_20px_rgba(0,88,188,0.35)]">
-            CL
-          </div>
-          <span className="text-[14px] font-semibold text-[#0f223b]">Customer Lens</span>
-        </div>
-        <motion.a
-          href="#login"
-          onClick={e => {
-            e.preventDefault()
-            document.getElementById('login')?.scrollIntoView({ behavior: 'smooth' })
-          }}
-          whileHover={{ y: -1 }}
-          className="focus-ring text-[13px] font-semibold text-[#0f223b]/85 hover:text-[#0f223b] border border-[#c1c6d7] bg-white px-4 py-1.5 rounded-full hover:border-[#717786] transition-colors"
-        >
-          Sign In →
-        </motion.a>
-      </nav>
 
       <ParallaxSection id="hero">
         <HeroSection />
@@ -107,7 +85,7 @@ function HeroSection() {
   ]
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#f4f8fd] via-[#e8f0fa] to-[#d9e6f6] overflow-hidden">
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden" style={{ background: '#ffffff' }}>
       <motion.div
         className="absolute -top-20 -left-20 w-[420px] h-[420px] rounded-full blur-3xl opacity-35"
         style={{ background: 'radial-gradient(circle, rgba(0,112,235,0.5) 0%, transparent 70%)' }}
@@ -145,8 +123,12 @@ function HeroSection() {
       ))}
 
       <div className="relative z-10 text-center">
-        <div className="inline-flex items-center gap-2 bg-[#0058bc]/10 border border-[#0058bc]/25 rounded-full px-4 py-1.5 mb-6">
-          <span className="text-[11px] font-bold uppercase tracking-widest text-[#0058bc]">Club Apparel Group</span>
+        {/* Brand mark inline on hero */}
+        <div className="flex items-center justify-center gap-2 mb-6">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0058bc] to-[#2b8cff] flex items-center justify-center text-[11px] font-bold text-white shadow-[0_4px_14px_rgba(0,88,188,0.35)]">
+            CL
+          </div>
+          <span className="text-[15px] font-bold text-[#0f223b]">Customer Lens</span>
         </div>
         <h1 className="text-[64px] font-black tracking-tight leading-none text-[#0f223b] mb-4">
           Customer
@@ -156,8 +138,23 @@ function HeroSection() {
         <p className="text-[16px] text-[#233b5a]/80 max-w-sm mx-auto">
           One platform. Every insight. All brands.
         </p>
-        <div className="mt-8 text-[12px] text-[#233b5a]/45 uppercase tracking-widest animate-bounce">
-          scroll to explore
+        <div className="mt-8 flex flex-col items-center gap-4">
+          <motion.a
+            href="#login"
+            onClick={e => {
+              e.preventDefault()
+              document.getElementById('login')?.scrollIntoView({ behavior: 'smooth' })
+            }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className="inline-flex items-center gap-2 px-7 py-3 rounded-full text-[13px] font-bold text-white"
+            style={{ background: 'linear-gradient(135deg, #0052b0 0%, #0074e8 100%)', boxShadow: '0 8px 24px rgba(0,88,188,0.30)' }}
+          >
+            Sign In →
+          </motion.a>
+          <div className="text-[11px] text-[#233b5a]/40 uppercase tracking-widest animate-bounce">
+            scroll to explore
+          </div>
         </div>
       </div>
     </div>
@@ -175,7 +172,7 @@ function MetricsSection() {
   ]
 
   return (
-    <div className="relative w-full h-full bg-gradient-to-br from-[#edf4fc] via-[#deebf8] to-[#d1e1f2] flex flex-col items-center justify-center overflow-hidden">
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden" style={{ background: '#ffffff' }}>
       <div className="text-center mb-10">
         <div className="text-[11px] font-bold uppercase tracking-widest text-[#0058bc] mb-2">Metrics Explorer</div>
         <h2 className="text-[40px] font-black tracking-tight text-[#0f223b] leading-tight">
@@ -210,7 +207,7 @@ function MetricsSection() {
 
 function CampaignsSection() {
   return (
-    <div className="relative w-full h-full bg-gradient-to-br from-[#e8f1fb] via-[#dae8f7] to-[#ccddef] flex flex-col items-center justify-center overflow-hidden pt-16">
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-16" style={{ background: '#ffffff' }}>
       <motion.div
         className="absolute -top-16 left-[12%] w-56 h-56 rounded-full blur-3xl bg-[#7a45d3]/20"
         animate={{ y: [0, 20, 0], x: [0, 10, 0] }}
@@ -385,7 +382,7 @@ function AISection() {
   ]
 
   return (
-    <div className="relative w-full h-full bg-gradient-to-br from-[#d9e8f7] via-[#c8ddf1] to-[#bad4ec] flex flex-col items-center justify-center overflow-hidden pt-12">
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-12" style={{ background: '#ffffff' }}>
       <div className="text-center mb-7">
         <div className="text-[11px] font-bold uppercase tracking-widest text-[#1f3957] mb-2">AI Intelligence</div>
         <h2 className="text-[40px] font-black tracking-tight text-[#0f223b] leading-tight">
