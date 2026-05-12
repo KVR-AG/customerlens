@@ -463,34 +463,14 @@ function AISection() {
 
 function DashboardBg() {
   return (
-    <div className="absolute inset-0">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#bed0e3] via-[#eaf1f9] to-[var(--color-background)]" />
-
-      <motion.div
-        className="absolute inset-0 opacity-30"
-        style={{ background: 'radial-gradient(circle at 20% 10%, rgba(0,88,188,0.25), transparent 40%)' }}
-        animate={{ opacity: [0.18, 0.34, 0.18] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      {/* Grid matrix — same pattern as hero screen */}
+    <div className="absolute inset-0" style={{ background: '#ffffff' }}>
       <div
-        className="absolute inset-0 opacity-50"
+        className="absolute inset-0"
         style={{
-          backgroundImage: 'linear-gradient(rgba(0,88,188,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,88,188,0.08) 1px, transparent 1px)',
+          backgroundImage: 'linear-gradient(rgba(0,88,188,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,88,188,0.05) 1px, transparent 1px)',
           backgroundSize: '40px 40px',
         }}
       />
-      {/* Subtle dot at each intersection */}
-      <div
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage: 'radial-gradient(circle, rgba(0,88,188,0.25) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }}
-      />
-
-      <div className="absolute bottom-0 left-0 right-0 h-72 bg-gradient-to-t from-[var(--color-background)] via-[var(--color-background)]/90 to-transparent" />
     </div>
   )
 }
