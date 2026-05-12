@@ -210,7 +210,7 @@ function MetricsSection() {
 
 function CampaignsSection() {
   return (
-    <div className="relative w-full h-full bg-gradient-to-br from-[#e8f1fb] via-[#dae8f7] to-[#ccddef] flex flex-col items-center justify-center overflow-hidden">
+    <div className="relative w-full h-full bg-gradient-to-br from-[#e8f1fb] via-[#dae8f7] to-[#ccddef] flex flex-col items-center justify-center overflow-hidden pt-16">
       <motion.div
         className="absolute -top-16 left-[12%] w-56 h-56 rounded-full blur-3xl bg-[#7a45d3]/20"
         animate={{ y: [0, 20, 0], x: [0, 10, 0] }}
@@ -236,42 +236,105 @@ function CampaignsSection() {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55 }}
         viewport={{ once: true }}
-        className="w-full max-w-md mx-4 bg-white/85 border border-[#cdd9ea] rounded-2xl overflow-hidden backdrop-blur-sm"
+        className="w-full max-w-lg mx-4 bg-white/90 border border-[#cdd9ea] rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,58,140,0.14)] backdrop-blur-sm"
       >
-        <div className="bg-[#f5f9ff] px-4 py-3 border-b border-[#d6e0ef] flex items-center justify-between">
-          <span className="text-[12px] font-bold text-[#1a3656] uppercase tracking-wider">Campaign Builder</span>
-          <div className="flex gap-1.5">
-            {['Basics', 'Audience', 'Channel', 'Offer', 'Creative'].map((s, i) => (
+        {/* Header */}
+        <div className="bg-gradient-to-r from-[#f0f6ff] to-[#f5f9ff] px-5 pb-3 border-b border-[#d6e0ef]" style={{ paddingTop: '20px' }}>
+          <div className="flex items-center justify-between mb-2.5">
+            <div className="text-[11px] font-bold uppercase tracking-widest text-[#0058bc] mb- 3">Campaign Builder</div>
+            <div className="text-[11px] font-semibold text-[#0f223b] mb-3">Dubai Gold + Black — Re-engagement</div>
+          </div>
+          <div className="flex gap-1.5 mb-3">
+            {[
+              { label: 'Basics',   done: true },
+              { label: 'Audience', done: true },
+              { label: 'Channel',  active: true },
+              { label: 'Offer',    done: false },
+              { label: 'Creative', done: false },
+            ].map((s) => (
               <span
-                key={s}
-                className={`text-[9px] px-2 py-0.5 rounded-full font-semibold ${
-                  i <= 1
-                    ? 'bg-[#dff6f1] text-[#1f4a56] border border-[#b8ebe0]'
-                    : i === 2
-                      ? 'bg-[#e8f1ff] text-[#204c72] border border-[#c5daf8]'
-                      : 'bg-white text-[#3f536f] border border-[#d6e0ef]'
-                }`}
+                key={s.label}
+                className="text-[9px] px-2.5 py-1 rounded-full font-semibold border flex-1 text-center whitespace-nowrap"
+                style={{
+                  background:  s.done ? '#dff6f1' : s.active ? '#e8f1ff' : '#f4f6fa',
+                  color:       s.done ? '#137a60' : s.active ? '#204c72' : '#6b7a94',
+                  borderColor: s.done ? '#b8ebe0' : s.active ? '#c5daf8' : '#d6e0ef',
+                }}
               >
-                {s}
+                {s.done ? '✓ ' : ''}{s.label}
               </span>
             ))}
           </div>
         </div>
-        <div className="p-4 space-y-3">
-          <div className="h-9 bg-white border border-[#d6e0ef] rounded-lg flex items-center px-3 text-[11px] text-[#3f536f]">
-            Push · WhatsApp · Email
-          </div>
-          <div className="bg-white border border-[#d6e0ef] rounded-xl p-3">
-            <div className="text-[22px] font-bold text-[#0f223b] tabular-nums">47,382</div>
-            <div className="text-[10px] text-[#3f536f] font-medium">Audience size · Gold + Black members</div>
-            <div className="flex gap-1 mt-2">
-              <motion.div className="h-1.5 rounded bg-[#0058bc]" initial={{ width: 0 }} whileInView={{ width: '52%' }} transition={{ duration: 0.6, delay: 0.05 }} viewport={{ once: true }} />
-              <motion.div className="h-1.5 rounded bg-[#7a45d3]" initial={{ width: 0 }} whileInView={{ width: '28%' }} transition={{ duration: 0.6, delay: 0.1 }} viewport={{ once: true }} />
-              <motion.div className="h-1.5 rounded bg-[#db7a00]" initial={{ width: 0 }} whileInView={{ width: '14%' }} transition={{ duration: 0.6, delay: 0.15 }} viewport={{ once: true }} />
-              <motion.div className="h-1.5 rounded flex-1 bg-[#00a3a3]" initial={{ width: 0 }} whileInView={{ width: '6%' }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }} />
+
+        <div className="p-5 space-y-4">
+          {/* Channels */}
+          <div>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#6b7a94] mb-2">Channels</div>
+            <div className="flex gap-2">
+              {[
+                { name: 'Push',      color: '#0058bc', bg: '#e8f1ff' },
+                { name: 'WhatsApp',  color: '#16a34a', bg: '#dcfce7' },
+                { name: 'Email',     color: '#7a45d3', bg: '#f2edff' },
+              ].map(ch => (
+                <div key={ch.name} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[11px] font-semibold" style={{ background: ch.bg, color: ch.color, borderColor: ch.color + '33' }}>
+                  <span className="w-1.5 h-1.5 rounded-full" style={{ background: ch.color }} />
+                  {ch.name}
+                </div>
+              ))}
             </div>
-            <div className="text-[9px] text-[#3f536f] mt-1">Push · WhatsApp · Email · Undeliverable</div>
           </div>
+
+          {/* Audience */}
+          <div className="bg-[#f7faff] border border-[#d6e0ef] rounded-xl p-4">
+            <div className="flex items-end justify-between mb-1">
+              <div>
+                <div className="text-[28px] font-black text-[#0f223b] tabular-nums leading-none">47,382</div>
+                <div className="text-[10px] text-[#3f536f] font-medium mt-0.5">Audience · Gold + Black members</div>
+              </div>
+              <div className="text-right">
+                <div className="text-[13px] font-bold" style={{ color: '#16a34a' }}>~31,240</div>
+                <div className="text-[9px] text-[#3f536f]">est. opens</div>
+              </div>
+            </div>
+            <div className="flex rounded-full overflow-hidden h-2 mt-3 gap-px">
+              <motion.div className="h-full rounded-l-full" style={{ background: '#0058bc' }} initial={{ width: 0 }} whileInView={{ width: '52%' }} transition={{ duration: 0.7, delay: 0.1 }} viewport={{ once: true }} />
+              <motion.div className="h-full" style={{ background: '#7a45d3' }} initial={{ width: 0 }} whileInView={{ width: '28%' }} transition={{ duration: 0.7, delay: 0.18 }} viewport={{ once: true }} />
+              <motion.div className="h-full" style={{ background: '#db7a00' }} initial={{ width: 0 }} whileInView={{ width: '14%' }} transition={{ duration: 0.7, delay: 0.26 }} viewport={{ once: true }} />
+              <motion.div className="h-full rounded-r-full flex-1" style={{ background: '#d1d9e6' }} initial={{ width: 0 }} whileInView={{ width: '6%' }} transition={{ duration: 0.7, delay: 0.34 }} viewport={{ once: true }} />
+            </div>
+            <div className="flex gap-3 mt-2">
+              {[['#0058bc','Push 52%'],['#7a45d3','WA 28%'],['#db7a00','Email 14%'],['#d1d9e6','Undeliv. 6%']].map(([c,l]) => (
+                <div key={l} className="flex items-center gap-1 text-[9px] text-[#3f536f]">
+                  <span className="w-2 h-2 rounded-sm inline-block" style={{ background: c }} />{l}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Impact row */}
+          <div className="flex gap-3">
+            {[
+              { label: 'Offer',       value: '15% off', sub: 'Loyalty reward' },
+              { label: 'Send date',   value: 'Today',   sub: 'Optimal window' },
+              { label: 'Exp. revenue',value: 'AED 2.1M',sub: '+4.4% lift' },
+            ].map(item => (
+              <div key={item.label} className="flex-1 bg-[#f7faff] border border-[#d6e0ef] rounded-lg px-3 py-2.5 text-center">
+                <div className="text-[13px] font-bold text-[#0f223b]">{item.value}</div>
+                <div className="text-[9px] text-[#3f536f] mt-0.5">{item.label}</div>
+                <div className="text-[9px] font-semibold mt-0.5" style={{ color: '#16a34a' }}>{item.sub}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Launch button */}
+          <motion.div
+            whileHover={{ scale: 1.01 }}
+            className="w-full h-10 rounded-xl flex items-center justify-center gap-2 text-[13px] font-bold text-white cursor-pointer"
+            style={{ background: 'linear-gradient(135deg, #0058bc, #0070eb)', boxShadow: '0 8px 24px rgba(0,88,188,0.28)' }}
+          >
+            <span>🚀</span> Launch Campaign
+          </motion.div>
         </div>
       </motion.div>
     </div>
