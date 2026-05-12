@@ -343,14 +343,50 @@ function CampaignsSection() {
 
 function AISection() {
   const insights = [
-    { type: 'critical', label: 'Critical', text: 'CA Conversion dropped 4.2pp in Dubai Mall — below threshold for 3rd consecutive week.', tone: 'bg-[#fff0e8] border-[#ffd7bf]', badge: 'bg-[#db7a00]/12 text-[#db7a00] border-[#db7a00]/20' },
-    { type: 'ai', label: 'AI Insight', text: 'Footfall up 6% but conversion down 4pp — assortment issue, not pricing. Suggest targeted campaign.', tone: 'bg-[#f2edff] border-[#ddd2ff]', badge: 'bg-[#7a45d3]/12 text-[#7a45d3] border-[#7a45d3]/20' },
-    { type: 'warning', label: 'Watchlist', text: 'Points Liability crossed AED 2.84M — up 5.3% vs last month. Ceiling breach expected in 18 days.', tone: 'bg-[#e8faf8] border-[#c7f0eb]', badge: 'bg-[#00a3a3]/12 text-[#008a79] border-[#00a3a3]/20' },
+    {
+      label: 'Critical',
+      icon: '⚠',
+      metric: '−4.2pp',
+      metricLabel: 'CA Conversion · Dubai Mall',
+      text: 'Below threshold for 3rd consecutive week. Immediate action recommended.',
+      time: '2 min ago',
+      accentColor: '#e05400',
+      bgColor: '#fff8f3',
+      borderColor: '#ffd0a8',
+      iconBg: '#fff0e0',
+      pulse: true,
+    },
+    {
+      label: 'AI Insight',
+      icon: '✦',
+      metric: '+6% / −4pp',
+      metricLabel: 'Footfall up · Conversion down',
+      text: 'Assortment gap detected — not a pricing issue. Targeted campaign suggested.',
+      time: '8 min ago',
+      accentColor: '#7a45d3',
+      bgColor: '#f7f3ff',
+      borderColor: '#ddd2ff',
+      iconBg: '#ede8ff',
+      pulse: false,
+    },
+    {
+      label: 'Watchlist',
+      icon: '◉',
+      metric: 'AED 2.84M',
+      metricLabel: 'Points Liability · +5.3% MoM',
+      text: 'Ceiling breach expected in 18 days. Review redemption strategy.',
+      time: '15 min ago',
+      accentColor: '#008a79',
+      bgColor: '#f0faf8',
+      borderColor: '#b8ebe0',
+      iconBg: '#dff6f1',
+      pulse: false,
+    },
   ]
 
   return (
-    <div className="relative w-full h-full bg-gradient-to-br from-[#d9e8f7] via-[#c8ddf1] to-[#bad4ec] flex flex-col items-center justify-center overflow-hidden">
-      <div className="text-center mb-10">
+    <div className="relative w-full h-full bg-gradient-to-br from-[#d9e8f7] via-[#c8ddf1] to-[#bad4ec] flex flex-col items-center justify-center overflow-hidden pt-12">
+      <div className="text-center mb-7">
         <div className="text-[11px] font-bold uppercase tracking-widest text-[#1f3957] mb-2">AI Intelligence</div>
         <h2 className="text-[40px] font-black tracking-tight text-[#0f223b] leading-tight">
           Flags what matters,
@@ -359,21 +395,68 @@ function AISection() {
         </h2>
       </div>
 
+      {/* Live summary bar */}
+      <div className="flex items-center gap-3 mb-5 bg-white/70 border border-[#cdd9ea] rounded-full px-4 py-1.5 backdrop-blur-sm">
+        <span className="flex items-center gap-1.5 text-[11px] font-semibold text-[#0f223b]">
+          <span className="w-2 h-2 rounded-full bg-[#e05400] inline-block" style={{ boxShadow: '0 0 0 3px rgba(224,84,0,0.2)' }} />
+          3 active alerts
+        </span>
+        <span className="w-px h-3 bg-[#cdd9ea]" />
+        <span className="text-[11px] text-[#3f536f]">2 need action</span>
+        <span className="w-px h-3 bg-[#cdd9ea]" />
+        <span className="text-[11px] text-[#3f536f]">Updated just now</span>
+      </div>
+
       <div className="space-y-3 max-w-lg w-full px-8">
         {insights.map((ins, i) => (
           <motion.div
             key={ins.label}
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.08, duration: 0.45 }}
+            transition={{ delay: i * 0.1, duration: 0.45 }}
             viewport={{ once: true }}
-            className={`border rounded-xl p-4 shadow-[0_14px_30px_rgba(18,41,70,0.10)] ${ins.tone}`}
+            className="rounded-xl overflow-hidden shadow-[0_8px_24px_rgba(18,41,70,0.10)] flex"
+            style={{ background: ins.bgColor, border: `1px solid ${ins.borderColor}` }}
           >
-            <div className={`text-[10px] font-bold px-2 py-0.5 rounded-full inline-block mb-2 border ${ins.badge}`}>
-              {ins.label}
+            {/* Left accent stripe */}
+            <div className="w-1 flex-shrink-0" style={{ background: ins.accentColor }} />
+
+            <div className="flex-1 p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  {/* Icon */}
+                  <div className="w-7 h-7 rounded-lg flex items-center justify-center text-[13px] flex-shrink-0"
+                    style={{ background: ins.iconBg, color: ins.accentColor }}>
+                    {ins.icon}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[11px] font-bold" style={{ color: ins.accentColor }}>{ins.label}</span>
+                      {ins.pulse && (
+                        <span className="relative flex h-1.5 w-1.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: ins.accentColor }} />
+                          <span className="relative inline-flex rounded-full h-1.5 w-1.5" style={{ background: ins.accentColor }} />
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-[10px] text-[#6b7a94] mt-0.5">{ins.time}</div>
+                  </div>
+                </div>
+                {/* Metric callout */}
+                <div className="text-right flex-shrink-0">
+                  <div className="text-[15px] font-black tabular-nums" style={{ color: ins.accentColor }}>{ins.metric}</div>
+                  <div className="text-[9px] text-[#6b7a94] leading-tight">{ins.metricLabel}</div>
+                </div>
+              </div>
+
+              <p className="text-[12px] text-[#2d405c] leading-relaxed mt-2.5">{ins.text}</p>
+
+              <div className="mt-2.5 flex items-center justify-between">
+                <div className="text-[11px] font-semibold" style={{ color: ins.accentColor }}>
+                  → View in Explorer
+                </div>
+              </div>
             </div>
-            <p className="text-[13px] font-medium text-[#2d405c] leading-relaxed">{ins.text}</p>
-            <div className="text-[11px] text-[#0058bc] mt-2 font-semibold">→ View in Explorer</div>
           </motion.div>
         ))}
       </div>
