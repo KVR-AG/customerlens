@@ -1,0 +1,38 @@
+:root {
+  /* Primary */
+  --color-primary:              #0058bc;
+  --color-primary-hover:        #0070eb;
+
+  /* Surfaces */
+  --color-background:           #f9f9f9;
+  --color-surface:              #ffffff;
+  --color-surface-low:          #f3f3f3;
+  --color-surface-high:         #e8e8e8;
+
+  /* Text */
+  --color-on-surface:           #1a1c1c;
+  --color-on-surface-variant:   #414755;
+  --color-secondary:            #5d5e63;
+
+  /* Borders */
+  --color-outline:              #c1c6d7;
+  --color-outline-strong:       #717786;
+
+  /* Semantic */
+  --color-positive:             #1e7a3c;
+  --color-positive-bg:          #d1fae5;
+  --color-negative:             #ba1a1a;
+  --color-negative-bg:          #ffdad6;
+  --color-warning:              #c64f00;
+  --color-warning-bg:           #fff0e6;
+  --color-watch:                #9e3d00;
+
+  /* AI */
+  --color-ai-accent:            #5e5ce6;
+  --color-ai-bg:                rgba(94, 92, 230, 0.08);
+
+  /* Shadows */
+  --shadow-card:                0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-modal:               0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-dropdown:            0 4px 16px rgba(0, 0, 0, 0.1);
+}

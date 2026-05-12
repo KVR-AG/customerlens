@@ -1,0 +1,99 @@
+@import './tokens.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-on-surface);
+    margin: 0;
+  }
+
+  /* Numeric values should always use tabular numerics */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-outline);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-outline-strong);
+  }
+}
+
+@layer utilities {
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-outline);
+    border-radius: 12px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .card-hover {
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+
+  .card-hover:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-color: var(--color-outline-strong);
+  }
+
+  .metric-value {
+    font-variant-numeric: tabular-nums lining-nums;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .delta-positive {
+    color: var(--color-positive);
+  }
+
+  .delta-negative {
+    color: var(--color-negative);
+  }
+
+  .badge-ai {
+    background: var(--color-ai-bg);
+    color: var(--color-ai-accent);
+    border: 1px solid rgba(94, 92, 230, 0.2);
+  }
+
+  .badge-critical {
+    background: var(--color-negative-bg);
+    color: var(--color-negative);
+    border: 1px solid rgba(186, 26, 26, 0.2);
+  }
+
+  .badge-warning {
+    background: var(--color-warning-bg);
+    color: var(--color-warning);
+    border: 1px solid rgba(198, 79, 0, 0.2);
+  }
+
+  .badge-positive {
+    background: var(--color-positive-bg);
+    color: var(--color-positive);
+    border: 1px solid rgba(30, 122, 60, 0.2);
+  }
+}
