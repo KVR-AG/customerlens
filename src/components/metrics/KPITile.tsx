@@ -29,16 +29,14 @@ export function KPITile({ metric, onClick, className }: KPITileProps) {
 
   const delta = metric.comparison.lyLflDelta
   const dc = deltaClass(delta, metric.invertedSentiment)
+  const baseClassName = cn(
+    'card p-4 flex flex-col gap-1 text-left',
+    onClick && 'card-hover cursor-pointer focus-ring',
+    className
+  )
 
-  return (
-    <div
-      onClick={onClick}
-      className={cn(
-        'card p-4 flex flex-col gap-1',
-        onClick && 'card-hover cursor-pointer',
-        className
-      )}
-    >
+  const content = (
+    <>
       <div className="text-[11px] font-semibold uppercase tracking-wider text-outline-strong">
         {metric.label}
       </div>
@@ -51,6 +49,16 @@ export function KPITile({ metric, onClick, className }: KPITileProps) {
       {metric.sparkline && (
         <SparkLine data={metric.sparkline} positive={!metric.invertedSentiment ? delta >= 0 : delta < 0} className="mt-1" />
       )}
-    </div>
+    </>
   )
+
+  if (onClick) {
+    return (
+      <button type="button" onClick={onClick} className={baseClassName}>
+        {content}
+      </button>
+    )
+  }
+
+  return <div className={baseClassName}>{content}</div>
 }

@@ -110,7 +110,8 @@ function CampaignWizard({ onCancel }: { onCancel: () => void }) {
   return (
     <div className="max-w-2xl">
       {/* Step indicators */}
-      <div className="flex items-center gap-0 mb-8">
+      <div className="overflow-x-auto mb-8">
+      <div className="flex items-center gap-0 min-w-max">
         {WIZARD_STEPS.map((s, i) => (
           <div key={s} className="flex items-center">
             <button
@@ -135,6 +136,7 @@ function CampaignWizard({ onCancel }: { onCancel: () => void }) {
             )}
           </div>
         ))}
+      </div>
       </div>
 
       {/* Step content */}
@@ -254,7 +256,7 @@ function StepAudience({ form }: any) {
       {/* Audience builder */}
       <div className="border border-outline rounded-xl p-4 space-y-3">
         <div className="text-[12px] font-semibold text-on-surface">Audience Filters</div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="text-[11px] text-outline-strong block mb-1">Tier</label>
             <select className="w-full h-9 border border-outline rounded-lg px-2.5 text-[12px]">
@@ -276,7 +278,7 @@ function StepAudience({ form }: any) {
         <div className="text-[32px] font-black tabular-nums text-on-surface">{formatNumber(form.audienceSize)}</div>
         <div className="text-[12px] text-outline-strong mb-3">estimated audience size</div>
 
-        <div className="grid grid-cols-3 gap-3 text-center">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
           {[
             { label: 'Reachability', value: '84.2%' },
             { label: 'Recent Contact %', value: '18.4%' },
@@ -330,7 +332,7 @@ function StepChannel({ form, setForm }: any) {
           ))}
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="text-[12px] font-semibold text-on-surface-var block mb-1.5">Send Window</label>
           <select className="w-full h-10 border border-outline rounded-lg px-3 text-[13px]">
@@ -349,7 +351,7 @@ function StepChannel({ form, setForm }: any) {
 function StepOffer({ form, setForm }: any) {
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="text-[12px] font-semibold text-on-surface-var block mb-1.5">Offer Type</label>
           <select className="w-full h-10 border border-outline rounded-lg px-3 text-[13px]">
@@ -410,16 +412,18 @@ function StepReview({ form }: any) {
       <div className="bg-green-50 border border-green-200 rounded-xl p-3 text-[12px] text-green-800 font-medium">
         ✓ Ready to submit. The Central CRM team will review within 48 hours.
       </div>
-      <table className="w-full text-[13px]">
+      <div className="table-surface">
+      <table className="data-table w-full">
         <tbody>
           {items.map(([k, v]) => (
-            <tr key={k} className="border-b border-surface-low">
-              <td className="py-2 pr-4 text-outline-strong font-medium w-40">{k}</td>
-              <td className="py-2 text-on-surface">{v}</td>
+            <tr key={k}>
+              <td className="text-outline-strong font-medium w-40">{k}</td>
+              <td className="text-on-surface">{v}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   )
 }

@@ -199,39 +199,44 @@ export function TalkToDataPage() {
 
       {/* Input bar */}
       <div className="border-t border-outline bg-surface px-6 py-4">
-        <div className="flex gap-3 max-w-3xl mx-auto">
+        <div className="max-w-3xl mx-auto space-y-3">
           {/* Quick suggestions */}
           {messages.length <= 1 && (
-            <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {[
                 'Active rate for Gold members YTD?',
                 'CA Revenue by brand this month',
                 'Points Liability trend vs LY',
               ].map(q => (
                 <button
+                  type="button"
                   key={q}
                   onClick={() => setInput(q)}
-                  className="text-[11px] bg-surface border border-outline rounded-full px-3 py-1.5 text-secondary hover:bg-surface-low hover:text-on-surface transition-colors whitespace-nowrap"
+                  className="focus-ring text-[11px] bg-surface border border-outline rounded-full px-3 py-1.5 text-secondary hover:bg-surface-low hover:text-on-surface transition-colors whitespace-nowrap"
                 >
                   {q}
                 </button>
               ))}
             </div>
           )}
+          <div className="flex gap-3">
           <input
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && sendMessage()}
             placeholder="Ask about your data... (e.g. 'What is the active rate for Gold members?')"
-            className="flex-1 h-11 border border-outline rounded-xl px-4 text-[13px] text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+            className="focus-ring flex-1 h-11 border border-outline rounded-xl px-4 text-[13px] text-on-surface focus:border-primary"
           />
           <button
+            type="button"
             onClick={sendMessage}
             disabled={!input.trim() || thinking}
-            className="h-11 w-11 bg-primary rounded-xl flex items-center justify-center text-white hover:bg-primary-hover disabled:opacity-40 transition-colors"
+            aria-label="Send message"
+            className="focus-ring h-11 w-11 bg-primary rounded-xl flex items-center justify-center text-white hover:bg-primary-hover disabled:opacity-40 transition-colors"
           >
             ↑
           </button>
+          </div>
         </div>
       </div>
     </div>
