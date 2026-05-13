@@ -31,27 +31,37 @@ export function KPITile({ metric, description, onClick, className }: KPITileProp
 
   const delta = metric.comparison.lyLflDelta
   const dc = deltaClass(delta, metric.invertedSentiment)
+  const isPositive = metric.invertedSentiment ? delta < 0 : delta >= 0
+
   const baseClassName = cn(
-    'card p-4 flex flex-col gap-1 text-left',
+    'card flex flex-col gap-1 text-left overflow-hidden',
     onClick && 'card-hover cursor-pointer focus-ring',
     className
   )
 
   const content = (
     <>
-      <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-outline-strong">
-        {metric.label}
-        {description && <Tooltip text={description} position="bottom" />}
+      {/* Coloured top accent bar */}
+      <div
+        className="h-1 w-full rounded-t-[inherit] -mx-0 mb-3"
+        style={{ background: isPositive ? '#1e7a3c' : '#ba1a1a', opacity: 0.85 }}
+      />
+
+      <div className="px-4 pb-4 flex flex-col gap-1">
+        <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-outline-strong">
+          {metric.label}
+          {description && <Tooltip text={description} position="bottom" />}
+        </div>
+        <div className="metric-value text-[22px] text-on-surface tabular-nums">
+          {formatted}
+        </div>
+        <div className={cn('text-[12px] font-medium', dc)}>
+          {formatDelta(delta, metric.comparison.unit as 'pct' | 'pp' | 'aed' | 'number')} vs LY LFL
+        </div>
+        {metric.sparkline && (
+          <SparkLine data={metric.sparkline} positive={isPositive} className="mt-1" />
+        )}
       </div>
-      <div className="metric-value text-[22px] text-on-surface tabular-nums">
-        {formatted}
-      </div>
-      <div className={cn('text-[12px] font-medium', dc)}>
-        {formatDelta(delta, metric.comparison.unit as 'pct' | 'pp' | 'aed' | 'number')} vs LY LFL
-      </div>
-      {metric.sparkline && (
-        <SparkLine data={metric.sparkline} positive={!metric.invertedSentiment ? delta >= 0 : delta < 0} className="mt-1" />
-      )}
     </>
   )
 
