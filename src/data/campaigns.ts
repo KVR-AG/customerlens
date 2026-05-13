@@ -29,7 +29,7 @@ export const campaigns: Campaign[] = [
   {
     id: 'c1',
     name: 'Ramadan Loyalty Booster',
-    brand: 'Centrepoint',
+    brand: 'R&B Fashion',
     brandColor: '#e74c3c',
     objective: 'Increase CA Conversion',
     channel: ['Push', 'WhatsApp', 'Email'],
@@ -45,7 +45,7 @@ export const campaigns: Campaign[] = [
   {
     id: 'c2',
     name: 'Silver Tier Reactivation',
-    brand: 'Splash',
+    brand: 'LC Waikiki',
     brandColor: '#f39c12',
     objective: 'Re-engage Hibernating Members',
     channel: ['Email', 'Push'],
@@ -60,7 +60,7 @@ export const campaigns: Campaign[] = [
   {
     id: 'c3',
     name: 'Black Member VIP Experience',
-    brand: 'Centrepoint',
+    brand: 'R&B Fashion',
     brandColor: '#e74c3c',
     objective: 'Reward Top Members',
     channel: ['SMS', 'WhatsApp'],
@@ -75,7 +75,7 @@ export const campaigns: Campaign[] = [
   {
     id: 'c4',
     name: 'Kids Summer Campaign',
-    brand: 'Babyshop',
+    brand: "The Children's Place",
     brandColor: '#9b59b6',
     objective: 'Increase Sales',
     channel: ['Email', 'Push'],
@@ -90,7 +90,7 @@ export const campaigns: Campaign[] = [
   {
     id: 'c5',
     name: 'At Risk Win-Back',
-    brand: 'Shoemart',
+    brand: 'Skechers',
     brandColor: '#1abc9c',
     objective: 'Prevent Churn',
     channel: ['Push', 'Email'],
@@ -105,7 +105,7 @@ export const campaigns: Campaign[] = [
   {
     id: 'c6',
     name: 'Gold Upgrade Incentive',
-    brand: 'Aldo',
+    brand: 'ALDO',
     brandColor: '#2c3e50',
     objective: 'Tier Upgrade',
     channel: ['Email', 'SMS'],

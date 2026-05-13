@@ -35,16 +35,16 @@ const CANNED: Record<string, Omit<Message, 'id' | 'role' | 'timestamp'>> = {
     },
   },
   ca_revenue: {
-    text: "CA Revenue by brand YTD (AED Millions):\n\n• Centrepoint: AED 52.4M (+14.2%)\n• Splash: AED 28.6M (+10.8%)\n• Babyshop: AED 18.4M (+9.2%)\n• Shoemart: AED 16.2M (+8.4%)\n• Aldo: AED 12.8M (+6.1%)\n• Gymshark: AED 10.4M (+18.6%)\n\nTotal CA Revenue: AED 138.8M (+12.4% vs LY LFL)",
+    text: "CA Revenue by brand YTD (AED Millions):\n\n• R&B Fashion: AED 52.4M (+14.2%)\n• LC Waikiki: AED 28.6M (+10.8%)\n• The Children's Place: AED 18.4M (+9.2%)\n• Skechers: AED 16.2M (+8.4%)\n• ALDO: AED 12.8M (+6.1%)\n• Adidas: AED 10.4M (+18.6%)\n\nTotal CA Revenue: AED 138.8M (+12.4% vs LY LFL)",
     chart: {
       type: 'bar',
       data: [
-        { brand: 'Centrepoint', value: 52.4 },
-        { brand: 'Splash', value: 28.6 },
-        { brand: 'Babyshop', value: 18.4 },
-        { brand: 'Shoemart', value: 16.2 },
-        { brand: 'Aldo', value: 12.8 },
-        { brand: 'Gymshark', value: 10.4 },
+        { brand: 'R&B Fashion', value: 52.4 },
+        { brand: 'LC Waikiki', value: 28.6 },
+        { brand: "The Children's Place", value: 18.4 },
+        { brand: 'Skechers', value: 16.2 },
+        { brand: 'ALDO', value: 12.8 },
+        { brand: 'Adidas', value: 10.4 },
       ],
       dataKey: 'value',
       xKey: 'brand',
@@ -52,7 +52,7 @@ const CANNED: Record<string, Omit<Message, 'id' | 'role' | 'timestamp'>> = {
     },
   },
   conversion: {
-    text: "The store with the lowest CA Conversion in Dubai YTD is **Dubai Festival City - Aldo** at 18.4%, down -4.2pp vs LY.\n\nTop 3 lowest conversion stores in Dubai:\n1. Dubai Festival City - Aldo: 18.4%\n2. Dubai Marina Mall - Splash: 22.1%\n3. Mirdif City Centre - Home Centre: 23.8%\n\nNote: Footfall at Dubai Festival City is up 6% — this suggests an assortment gap rather than a traffic issue.",
+    text: "The store with the lowest CA Conversion in Dubai YTD is **Dubai Festival City - ALDO** at 18.4%, down -4.2pp vs LY.\n\nTop 3 lowest conversion stores in Dubai:\n1. Dubai Festival City - ALDO: 18.4%\n2. Dubai Marina Mall - LC Waikiki: 22.1%\n3. Mirdif City Centre - 6thStreet.com: 23.8%\n\nNote: Footfall at Dubai Festival City is up 6% — this suggests an assortment gap rather than a traffic issue.",
   },
   liability: {
     text: "Points Liability (AED) is trending upward. Current YTD liability is AED 2.84M, up +5.3% vs last year.\n\nAt the current issuance rate, the liability ceiling of AED 3.0M may be breached within approximately 18 days.",

@@ -47,12 +47,12 @@ export const revenueTrend = [
 
 // Store league table
 export const storeLeague = [
-  { store: 'Dubai Mall - Centrepoint',         salesVsLy: 18.4, salesAed: 12_400_000 },
-  { store: 'Mall of Emirates - Centrepoint',   salesVsLy: 14.2, salesAed: 10_800_000 },
-  { store: 'Yas Mall - Splash',                salesVsLy: 12.8, salesAed: 6_200_000  },
-  { store: 'City Centre Deira - Babyshop',     salesVsLy: 11.4, salesAed: 4_800_000  },
-  { store: 'Mall of Arabia - Shoemart',        salesVsLy: 9.6,  salesAed: 3_400_000  },
-  { store: 'Dubai Festival City - Aldo',       salesVsLy: -4.2, salesAed: 2_100_000  },
-  { store: 'Ibn Battuta - Gymshark',           salesVsLy: -6.8, salesAed: 1_800_000  },
-  { store: 'Mirdif City Centre - Home Centre', salesVsLy: -8.4, salesAed: 1_600_000  },
+  { store: 'Dubai Mall - R&B Fashion',              salesVsLy: 18.4, salesAed: 12_400_000 },
+  { store: 'Mall of Emirates - R&B Fashion',        salesVsLy: 14.2, salesAed: 10_800_000 },
+  { store: 'Yas Mall - LC Waikiki',                 salesVsLy: 12.8, salesAed: 6_200_000  },
+  { store: "City Centre Deira - The Children's Place", salesVsLy: 11.4, salesAed: 4_800_000 },
+  { store: 'Mall of Arabia - Skechers',             salesVsLy: 9.6,  salesAed: 3_400_000  },
+  { store: 'Dubai Festival City - ALDO',            salesVsLy: -4.2, salesAed: 2_100_000  },
+  { store: 'Ibn Battuta - Adidas',                  salesVsLy: -6.8, salesAed: 1_800_000  },
+  { store: 'Mirdif City Centre - 6thStreet.com',    salesVsLy: -8.4, salesAed: 1_600_000  },
 ]

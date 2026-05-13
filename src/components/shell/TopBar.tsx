@@ -1,6 +1,5 @@
 import { cn } from '@/lib/utils'
 import { usePersona } from '@/hooks/usePersona'
-import { useOutletContext } from 'react-router-dom'
 
 interface TopBarProps {
   title?: string
@@ -8,10 +7,6 @@ interface TopBarProps {
   onPeriodChange?: (p: 'YTD' | 'MTD' | 'WTD') => void
   primaryAction?: { label: string; onClick: () => void }
   secondaryAction?: { label: string; onClick: () => void }
-}
-
-interface OutletCtx {
-  onMobileNavOpen?: () => void
 }
 
 const PERIODS = ['YTD', 'MTD', 'WTD'] as const
@@ -24,7 +19,6 @@ export function TopBar({
   secondaryAction,
 }: TopBarProps) {
   const { persona } = usePersona()
-  const ctx = useOutletContext<OutletCtx>()
 
   const greeting = () => {
     const h = new Date().getHours()
@@ -35,16 +29,6 @@ export function TopBar({
 
   return (
     <header className="h-[52px] bg-surface border-b border-outline flex items-center px-4 gap-2 flex-shrink-0 overflow-hidden">
-      {/* Hamburger — mobile only */}
-      <button
-        type="button"
-        onClick={() => ctx?.onMobileNavOpen?.()}
-        className="focus-ring lg:hidden flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-md text-secondary hover:text-on-surface hover:bg-surface-low transition-colors text-[18px]"
-        aria-label="Open navigation"
-      >
-        ☰
-      </button>
-
       <div className="text-[15px] font-bold text-on-surface tracking-tight font-display truncate min-w-0 flex-shrink">
         {title ?? `${greeting()}, ${persona.name.split(' ')[0]}`}
       </div>
