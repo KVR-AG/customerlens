@@ -1,5 +1,6 @@
 import { cn, formatAED, formatNumber, formatPct, formatDelta, deltaClass } from '@/lib/utils'
 import { SparkLine } from '@/components/charts/SparkLine'
+import { Tooltip } from '@/components/ui/Tooltip'
 
 interface KPITileProps {
   metric: {
@@ -16,11 +17,12 @@ interface KPITileProps {
       unit: string
     }
   }
+  description?: string
   onClick?: () => void
   className?: string
 }
 
-export function KPITile({ metric, onClick, className }: KPITileProps) {
+export function KPITile({ metric, description, onClick, className }: KPITileProps) {
   const formatted = metric.format === 'aed'
     ? formatAED(metric.value, true)
     : metric.format === 'pct'
@@ -37,8 +39,9 @@ export function KPITile({ metric, onClick, className }: KPITileProps) {
 
   const content = (
     <>
-      <div className="text-[11px] font-semibold uppercase tracking-wider text-outline-strong">
+      <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-outline-strong">
         {metric.label}
+        {description && <Tooltip text={description} position="bottom" />}
       </div>
       <div className="metric-value text-[22px] text-on-surface tabular-nums">
         {formatted}
