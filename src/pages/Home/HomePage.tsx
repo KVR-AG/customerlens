@@ -14,7 +14,7 @@ import { STATUS_LABELS, STATUS_COLORS } from '@/data/campaigns'
 
 type Period = 'YTD' | 'MTD' | 'WTD'
 
-// ─── Segment bucketing config ────────────────────────────────────────────────
+// ─── Segment bucketing config (colors derived at render time from trend) ──────
 const SEGMENT_BUCKETS = [
   {
     key: 'healthy',
@@ -22,9 +22,6 @@ const SEGMENT_BUCKETS = [
     sublabel: 'Champions · Loyal Customers',
     segments: ['Champions', 'Loyal Customers'],
     tooltip: 'Your most valuable customers — frequent buyers who spent recently. Champions are your top RFM scorers (highest recency, frequency & spend). Loyal Customers buy regularly but slightly less so. Losing one here costs far more than acquiring ten new Silver members. Focus: rewards, VIP access, early launches.',
-    colorClass: 'text-[#1e7a3c]',
-    bgClass: 'bg-[#f0faf4] border-[#a7d9b8]',
-    dotColor: '#1e7a3c',
     action: 'Retain & reward',
     actionPath: '/metrics?tab=rfm',
   },
@@ -33,10 +30,7 @@ const SEGMENT_BUCKETS = [
     label: 'Growth Pipeline',
     sublabel: 'Potential Loyalists · Promising · New',
     segments: ['Potential Loyalists', 'Promising', 'New Customers'],
-    tooltip: 'Customers who show loyalty intent but haven\'t fully committed yet. New Customers just enrolled. Promising ones have visited a couple of times. Potential Loyalists are one or two purchases away from being regulars. A well-timed nudge — tier upgrade incentive, bonus points, cross-brand offer — can convert this group into your Healthy Core.',
-    colorClass: 'text-[#0058bc]',
-    bgClass: 'bg-[#f0f4ff] border-[#a7bfed]',
-    dotColor: '#0058bc',
+    tooltip: "Customers who show loyalty intent but haven't fully committed yet. New Customers just enrolled. Promising ones have visited a couple of times. Potential Loyalists are one or two purchases away from being regulars. A well-timed nudge — tier upgrade incentive, bonus points, cross-brand offer — can convert this group into your Healthy Core.",
     action: 'Nurture to loyal',
     actionPath: '/campaigns',
   },
@@ -46,13 +40,16 @@ const SEGMENT_BUCKETS = [
     sublabel: 'At Risk · Hibernating · Lost',
     segments: ['At Risk', 'Hibernating', 'Lost Customers'],
     tooltip: 'At Risk: were once active but are lapsing now — act fast. Hibernating: no purchase in many months, still reachable. Lost: likely churned. Every day without action reduces win-back probability. A targeted re-engagement offer (bonus points, personalised discount) now is cheaper than re-acquiring them cold later.',
-    colorClass: 'text-[#ba1a1a]',
-    bgClass: 'bg-[#fff4f4] border-[#f5aaaa]',
-    dotColor: '#ba1a1a',
     action: 'Win-back campaign',
     actionPath: '/actions',
   },
 ] as const
+
+// ─── Trend-driven color palette (green = bullish, red = bearish) ─────────────
+const TREND_COLORS = {
+  positive: { dot: '#1e7a3c', text: 'text-[#1e7a3c]', bg: 'bg-[#f0faf4] border-[#a7d9b8]' },
+  negative: { dot: '#ba1a1a', text: 'text-[#ba1a1a]', bg: 'bg-[#fff4f4] border-[#f5aaaa]' },
+}
 
 // ─── Tier config ─────────────────────────────────────────────────────────────
 const TIER_CONFIG = [
@@ -171,6 +168,7 @@ export function HomePage() {
                 const pct = ((totalCount / totalBase) * 100).toFixed(1)
                 const avgTrend = bucketSegs.reduce((a, s) => a + s.trend, 0) / bucketSegs.length
                 const isPos = avgTrend >= 0
+                const palette = isPos ? TREND_COLORS.positive : TREND_COLORS.negative
 
                 return (
                   <button
@@ -179,14 +177,14 @@ export function HomePage() {
                     onClick={() => navigate(bucket.actionPath)}
                     className={cn(
                       'focus-ring text-left card p-4 border rounded-xl card-hover flex flex-col gap-0',
-                      bucket.bgClass
+                      palette.bg
                     )}
                   >
                     {/* ── Header row ── */}
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: bucket.dotColor }} />
-                        <span className={cn('text-[12px] font-bold tracking-tight', bucket.colorClass)}>
+                        <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: palette.dot }} />
+                        <span className={cn('text-[12px] font-bold tracking-tight', palette.text)}>
                           {bucket.label}
                         </span>
                         <Tooltip text={bucket.tooltip} position="bottom" />
@@ -209,10 +207,9 @@ export function HomePage() {
                       </span>
                     </div>
 
-                    {/* ── Stacked proportion bar — shades of the bucket colour ── */}
+                    {/* ── Stacked proportion bar ── */}
                     <div className="mt-3 flex h-2 rounded-full overflow-hidden gap-px">
                       {bucketSegs.map((s, idx) => {
-                        // darkest → lightest as index increases
                         const opacity = 1 - idx * (0.55 / Math.max(bucketSegs.length - 1, 1))
                         return (
                           <div
@@ -220,7 +217,7 @@ export function HomePage() {
                             className="h-full first:rounded-l-full last:rounded-r-full"
                             style={{
                               width: `${(s.count / totalCount) * 100}%`,
-                              background: bucket.dotColor,
+                              background: palette.dot,
                               opacity,
                             }}
                           />
@@ -237,7 +234,7 @@ export function HomePage() {
                           <div key={s.name} className="flex items-center gap-2">
                             <span
                               className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                              style={{ background: bucket.dotColor, opacity }}
+                              style={{ background: palette.dot, opacity }}
                             />
                             <span className="text-[11px] text-on-surface-var flex-1 truncate leading-none">
                               {s.name}
@@ -248,7 +245,7 @@ export function HomePage() {
                             <div className="w-14 h-1.5 bg-black/[0.06] rounded-full overflow-hidden flex-shrink-0">
                               <div
                                 className="h-full rounded-full"
-                                style={{ width: `${segPct}%`, background: bucket.dotColor, opacity }}
+                                style={{ width: `${segPct}%`, background: palette.dot, opacity }}
                               />
                             </div>
                           </div>
@@ -258,10 +255,10 @@ export function HomePage() {
 
                     {/* ── Action CTA ── */}
                     <div className="mt-4 pt-3 border-t border-black/8 flex items-center justify-between">
-                      <span className={cn('text-[11px] font-semibold', bucket.colorClass)}>
+                      <span className={cn('text-[11px] font-semibold', palette.text)}>
                         {bucket.action}
                       </span>
-                      <span className={cn('text-[13px] font-bold leading-none', bucket.colorClass)}>→</span>
+                      <span className={cn('text-[13px] font-bold leading-none', palette.text)}>→</span>
                     </div>
                   </button>
                 )
