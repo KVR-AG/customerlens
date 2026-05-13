@@ -165,7 +165,7 @@ export function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {SEGMENT_BUCKETS.map(bucket => {
-                const bucketSegs = rfm.filter(s => bucket.segments.includes(s.name as any))
+                const bucketSegs = rfm.filter(s => (bucket.segments as readonly string[]).includes(s.name))
                 const totalCount = bucketSegs.reduce((a, s) => a + s.count, 0)
                 const totalBase = rfm.reduce((a, s) => a + s.count, 0)
                 const pct = ((totalCount / totalBase) * 100).toFixed(1)
@@ -178,65 +178,90 @@ export function HomePage() {
                     type="button"
                     onClick={() => navigate(bucket.actionPath)}
                     className={cn(
-                      'focus-ring text-left card p-4 border rounded-xl card-hover',
+                      'focus-ring text-left card p-4 border rounded-xl card-hover flex flex-col gap-0',
                       bucket.bgClass
                     )}
                   >
-                    <div className="flex items-start justify-between mb-2">
-                      <div>
-                        <div className="flex items-center gap-1.5 mb-0.5">
-                          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: bucket.dotColor }} />
-                          <span className={cn('text-[12px] font-bold', bucket.colorClass)}>
-                            {bucket.label}
-                          </span>
-                          <Tooltip text={bucket.tooltip} position="bottom" />
-                        </div>
-                        <div className="text-[10px] text-outline-strong pl-3.5">{bucket.sublabel}</div>
+                    {/* ── Header row ── */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: bucket.dotColor }} />
+                        <span className={cn('text-[12px] font-bold tracking-tight', bucket.colorClass)}>
+                          {bucket.label}
+                        </span>
+                        <Tooltip text={bucket.tooltip} position="bottom" />
                       </div>
-                      <div className={cn(
-                        'text-[11px] font-semibold px-2 py-0.5 rounded-full',
-                        isPos ? 'bg-positive-bg text-positive delta-positive' : 'bg-negative-bg text-negative delta-negative'
+                      <span className={cn(
+                        'text-[11px] font-semibold tabular-nums px-2 py-0.5 rounded-full',
+                        isPos ? 'delta-positive bg-positive-bg' : 'delta-negative bg-negative-bg'
                       )}>
                         {isPos ? '+' : ''}{avgTrend.toFixed(1)}%
-                      </div>
+                      </span>
                     </div>
 
-                    <div className="mt-3 flex items-end justify-between">
-                      <div>
-                        <div className="text-[20px] font-bold tabular-nums text-on-surface">
-                          {formatNumber(totalCount, true)}
-                        </div>
-                        <div className="text-[11px] text-outline-strong">{pct}% of CA base</div>
-                      </div>
-                      <div className={cn(
-                        'text-[11px] font-semibold rounded-lg px-2.5 py-1',
-                        bucket.colorClass,
-                        'bg-white/60'
-                      )}>
-                        {bucket.action} →
-                      </div>
+                    {/* ── Big number ── */}
+                    <div className="mt-3 flex items-baseline gap-2">
+                      <span className="text-[28px] font-black tabular-nums text-on-surface leading-none">
+                        {formatNumber(totalCount, true)}
+                      </span>
+                      <span className="text-[11px] text-outline-strong font-medium">
+                        {pct}% of base
+                      </span>
                     </div>
 
-                    {/* Mini bar showing individual segment sizes */}
-                    <div className="mt-3 flex gap-0.5 h-1.5 rounded-full overflow-hidden">
-                      {bucketSegs.map(s => (
-                        <div
-                          key={s.name}
-                          className="h-full rounded-full"
-                          style={{
-                            width: `${(s.count / totalCount) * 100}%`,
-                            background: bucket.dotColor,
-                            opacity: 0.4 + (bucketSegs.indexOf(s) / bucketSegs.length) * 0.6,
-                          }}
-                        />
-                      ))}
+                    {/* ── Stacked proportion bar — shades of the bucket colour ── */}
+                    <div className="mt-3 flex h-2 rounded-full overflow-hidden gap-px">
+                      {bucketSegs.map((s, idx) => {
+                        // darkest → lightest as index increases
+                        const opacity = 1 - idx * (0.55 / Math.max(bucketSegs.length - 1, 1))
+                        return (
+                          <div
+                            key={s.name}
+                            className="h-full first:rounded-l-full last:rounded-r-full"
+                            style={{
+                              width: `${(s.count / totalCount) * 100}%`,
+                              background: bucket.dotColor,
+                              opacity,
+                            }}
+                          />
+                        )
+                      })}
                     </div>
-                    <div className="mt-1.5 flex gap-2 flex-wrap">
-                      {bucketSegs.map(s => (
-                        <span key={s.name} className="text-[10px] text-outline-strong">
-                          {s.name}: {formatNumber(s.count, true)}
-                        </span>
-                      ))}
+
+                    {/* ── Segment rows ── */}
+                    <div className="mt-3 space-y-2">
+                      {bucketSegs.map((s, idx) => {
+                        const segPct = (s.count / totalCount) * 100
+                        const opacity = 1 - idx * (0.55 / Math.max(bucketSegs.length - 1, 1))
+                        return (
+                          <div key={s.name} className="flex items-center gap-2">
+                            <span
+                              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                              style={{ background: bucket.dotColor, opacity }}
+                            />
+                            <span className="text-[11px] text-on-surface-var flex-1 truncate leading-none">
+                              {s.name}
+                            </span>
+                            <span className="text-[11px] font-semibold tabular-nums text-on-surface w-10 text-right flex-shrink-0">
+                              {formatNumber(s.count, true)}
+                            </span>
+                            <div className="w-14 h-1.5 bg-black/[0.06] rounded-full overflow-hidden flex-shrink-0">
+                              <div
+                                className="h-full rounded-full"
+                                style={{ width: `${segPct}%`, background: bucket.dotColor, opacity }}
+                              />
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+
+                    {/* ── Action CTA ── */}
+                    <div className="mt-4 pt-3 border-t border-black/8 flex items-center justify-between">
+                      <span className={cn('text-[11px] font-semibold', bucket.colorClass)}>
+                        {bucket.action}
+                      </span>
+                      <span className={cn('text-[13px] font-bold leading-none', bucket.colorClass)}>→</span>
                     </div>
                   </button>
                 )
