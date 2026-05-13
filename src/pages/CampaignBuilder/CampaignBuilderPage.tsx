@@ -98,7 +98,7 @@ function CampaignWizard({ onCancel }: { onCancel: () => void }) {
   const [form, setForm] = useState({
     name: '',
     objective: '',
-    brand: 'Centrepoint',
+    brand: 'R&B Fashion',
     justification: '',
     priority: 'medium',
     audienceSize: 47_382,

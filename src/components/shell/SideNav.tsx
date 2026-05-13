@@ -76,9 +76,9 @@ export function SideNav({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
                     : 'text-secondary hover:bg-surface-low hover:text-on-surface'
                 )}
               >
-                <span className="text-[16px] w-5 flex-shrink-0">{item.icon}</span>
+                <item.icon size={16} strokeWidth={1.8} className="flex-shrink-0" />
                 {isExpanded && <span>{item.label}</span>}
-                {'badge' in item && item.badge ? (
+                {item.badge ? (
                   isExpanded ? (
                     <span className="ml-auto bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                       {item.badge}
@@ -111,7 +111,7 @@ export function SideNav({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
                       : 'text-secondary hover:bg-surface-low hover:text-on-surface'
                   )}
                 >
-                  <span className="text-[16px] w-5 flex-shrink-0">{item.icon}</span>
+                  <item.icon size={16} strokeWidth={1.8} className="flex-shrink-0" />
                   {isExpanded && <span>{item.label}</span>}
                 </Link>
               )

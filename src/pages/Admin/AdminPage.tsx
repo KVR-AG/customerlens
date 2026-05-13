@@ -18,11 +18,11 @@ const ADMIN_TABS = [
 
 const MOCK_USERS = [
   { id: 1, name: 'Ahmed Al Mansouri', email: 'ahmed@clubapparel.com', role: 'CEO', brand: 'All', status: 'active' },
-  { id: 2, name: 'Sarah Johnson',     email: 'sarah@clubapparel.com', role: 'Brand Head', brand: 'Centrepoint', status: 'active' },
+  { id: 2, name: 'Sarah Johnson',     email: 'sarah@clubapparel.com', role: 'Brand Head', brand: 'R&B Fashion', status: 'active' },
   { id: 3, name: 'Rania El-Sharif',  email: 'rania@clubapparel.com', role: 'Country Head', brand: 'UAE', status: 'active' },
   { id: 4, name: 'David Chen',        email: 'david@clubapparel.com', role: 'CLO', brand: 'Central', status: 'active' },
-  { id: 5, name: 'Priya Nair',        email: 'priya@clubapparel.com', role: 'Operator', brand: 'Centrepoint', status: 'active' },
-  { id: 6, name: 'Mike Torres',       email: 'mike@clubapparel.com',  role: 'Brand Head', brand: 'Splash', status: 'inactive' },
+  { id: 5, name: 'Priya Nair',        email: 'priya@clubapparel.com', role: 'Operator', brand: 'R&B Fashion', status: 'active' },
+  { id: 6, name: 'Mike Torres',       email: 'mike@clubapparel.com',  role: 'Brand Head', brand: 'LC Waikiki', status: 'inactive' },
 ]
 
 export function AdminPage() {

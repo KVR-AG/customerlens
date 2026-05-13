@@ -21,8 +21,8 @@ export const PERSONAS: Persona[] = [
   {
     id: 'brand_head',
     name: 'Sarah Johnson',
-    role: 'Brand Head · Centrepoint',
-    brand: 'centrepoint',
+    role: 'Brand Head · R&B Fashion',
+    brand: 'rb',
     avatar: 'SJ',
     aiUsagePct: 82,
   },

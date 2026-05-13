@@ -6,9 +6,10 @@ import { useLoyaltyMetrics, useRetailMetrics, useRfmSegments, useDemographics, u
 import { cn, formatAED, formatNumber, formatPct } from '@/lib/utils'
 import { METRIC_DOMAINS } from '@/lib/constants'
 import { RFM_SEGMENT_COLORS } from '@/lib/constants'
+import { SlidersHorizontal, ChevronDown } from 'lucide-react'
 import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts'
 
 type Period = 'YTD' | 'MTD' | 'WTD'
@@ -20,6 +21,7 @@ export function MetricsExplorerPage() {
   const [view, setView] = useState<'summary' | 'deep-dive'>('summary')
   const [notice, setNotice] = useState<string | null>(null)
   const [filterOpen, setFilterOpen] = useState(false)
+  const [filtersCollapsed, setFiltersCollapsed] = useState(false)
 
   const loyaltyQuery = useLoyaltyMetrics()
   const retailQuery = useRetailMetrics()
@@ -50,15 +52,31 @@ export function MetricsExplorerPage() {
           />
         )}
 
-        {/* Left filter panel — desktop always visible, mobile slide-in drawer */}
-        <aside className={cn(
-          'flex-shrink-0 bg-surface border-r border-outline overflow-y-auto p-4 space-y-5 transition-transform duration-200',
-          'fixed inset-y-0 left-0 z-40 w-[260px] lg:static lg:translate-x-0',
-          filterOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        {/* Desktop filter panel — collapsible */}
+        <div className={cn(
+          'hidden lg:block flex-shrink-0 overflow-hidden transition-[width] duration-200 ease-out',
+          filtersCollapsed ? 'w-0' : 'w-[260px]'
         )}>
-          <div className="flex items-center justify-between lg:hidden mb-2">
+          <aside className="w-[260px] h-full bg-surface border-r border-outline overflow-y-auto p-4 space-y-4">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-outline-strong">Filters</div>
+            <FilterPanel />
+          </aside>
+        </div>
+
+        {/* Mobile filter drawer */}
+        <aside className={cn(
+          'fixed inset-y-0 left-0 z-40 w-[260px] flex-shrink-0 bg-surface border-r border-outline overflow-y-auto p-4 space-y-4 transition-transform duration-200 lg:hidden',
+          filterOpen ? 'translate-x-0' : '-translate-x-full'
+        )}>
+          <div className="flex items-center justify-between mb-1">
             <span className="text-[13px] font-bold text-on-surface">Filters</span>
-            <button type="button" onClick={() => setFilterOpen(false)} className="focus-ring text-secondary text-[18px] w-7 h-7 flex items-center justify-center rounded-md hover:bg-surface-low">✕</button>
+            <button
+              type="button"
+              onClick={() => setFilterOpen(false)}
+              className="focus-ring text-secondary w-7 h-7 flex items-center justify-center rounded-md hover:bg-surface-low text-[16px]"
+            >
+              ✕
+            </button>
           </div>
           <FilterPanel />
         </aside>
@@ -86,16 +104,36 @@ export function MetricsExplorerPage() {
             </div>
           </div>
 
-          {/* View toggle */}
+          {/* Toolbar */}
           <div className="flex items-center gap-2 px-4 py-2 border-b border-outline/40 bg-surface-low/50 flex-shrink-0">
-            {/* Mobile Filters button */}
+            {/* Desktop: collapse/expand filter panel */}
+            <button
+              type="button"
+              onClick={() => setFiltersCollapsed(p => !p)}
+              aria-pressed={filtersCollapsed}
+              className={cn(
+                'focus-ring hidden lg:flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-[11px] font-semibold border transition-colors',
+                filtersCollapsed
+                  ? 'border-primary text-primary bg-primary/5 hover:bg-primary/10'
+                  : 'border-outline text-on-surface bg-surface hover:bg-surface-low'
+              )}
+            >
+              <SlidersHorizontal size={12} />
+              <span>Filters</span>
+            </button>
+
+            {/* Mobile: open filter drawer */}
             <button
               type="button"
               onClick={() => setFilterOpen(true)}
-              className="focus-ring lg:hidden h-7 px-3 rounded-lg text-[11px] font-semibold border border-outline text-on-surface bg-surface hover:bg-surface-low transition-colors"
+              className="focus-ring lg:hidden flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-[11px] font-semibold border border-outline text-on-surface bg-surface hover:bg-surface-low transition-colors"
             >
-              ⚙ Filters
+              <SlidersHorizontal size={12} />
+              <span>Filters</span>
             </button>
+
+            <div className="w-px h-4 bg-outline/50" />
+
             <span className="text-[11px] text-outline-strong">View:</span>
             {(['summary', 'deep-dive'] as const).map(v => (
               <button
@@ -155,63 +193,102 @@ export function MetricsExplorerPage() {
   )
 }
 
+function FilterSection({
+  title,
+  defaultOpen = true,
+  children,
+}: {
+  title: string
+  defaultOpen?: boolean
+  children: React.ReactNode
+}) {
+  const [open, setOpen] = useState(defaultOpen)
+
+  return (
+    <div className="border border-outline/50 rounded-lg overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className="focus-ring w-full flex items-center justify-between px-3 py-2 bg-surface-low hover:bg-surface-high transition-colors"
+      >
+        <span className="text-[11px] font-bold uppercase tracking-wider text-outline-strong">
+          {title}
+        </span>
+        <ChevronDown
+          size={13}
+          className={cn('text-secondary transition-transform duration-200', open ? 'rotate-0' : '-rotate-90')}
+        />
+      </button>
+
+      {/* height animation via grid trick */}
+      <div className={cn('grid transition-[grid-template-rows] duration-200', open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]')}>
+        <div className="overflow-hidden">
+          <div className="px-3 py-2.5 space-y-1">
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function FilterPanel() {
+  const [granularity, setGranularity] = useState('Group')
   const [notice, setNotice] = useState('')
 
   return (
-    <>
-      <div>
-        <div className="text-[11px] font-bold uppercase tracking-wider text-outline-strong mb-2">Granularity</div>
+    <div className="space-y-2.5">
+      <FilterSection title="Granularity">
         <div className="flex flex-wrap gap-1.5">
-          {['Group', 'Brand', 'Country', 'City', 'Mall', 'Store'].map((g, i) => (
+          {['Group', 'Brand', 'Country', 'City', 'Mall', 'Store'].map(g => (
             <button
               key={g}
               type="button"
+              onClick={() => setGranularity(g)}
               className={cn(
                 'focus-ring text-[11px] px-2.5 py-1 rounded-md font-medium transition-colors',
-                i === 0 ? 'bg-primary text-white' : 'bg-surface-low text-secondary hover:bg-surface-high'
+                granularity === g
+                  ? 'bg-primary text-white'
+                  : 'bg-surface-low text-secondary hover:bg-surface-high'
               )}
             >
               {g}
             </button>
           ))}
         </div>
-      </div>
+      </FilterSection>
 
-      <div>
-        <div className="text-[11px] font-bold uppercase tracking-wider text-outline-strong mb-2">Brand</div>
-        {['All Brands', 'Centrepoint', 'Splash', 'Babyshop', 'Shoemart', 'Aldo'].map((b, i) => (
-          <label key={b} className="flex items-center gap-2 py-1 cursor-pointer">
-            <input type="checkbox" defaultChecked={i === 0} className="accent-primary w-3.5 h-3.5" />
+      <FilterSection title="Brand">
+        {['All Brands', 'R&B Fashion', 'LC Waikiki', "The Children's Place", 'Skechers', 'ALDO'].map((b, i) => (
+          <label key={b} className="flex items-center gap-2 py-0.5 cursor-pointer">
+            <input type="checkbox" defaultChecked={i === 0} className="accent-primary w-3.5 h-3.5 flex-shrink-0" />
             <span className="text-[12px] text-on-surface-var">{b}</span>
           </label>
         ))}
-      </div>
+      </FilterSection>
 
-      <div>
-        <div className="text-[11px] font-bold uppercase tracking-wider text-outline-strong mb-2">Tier</div>
+      <FilterSection title="Tier">
         {['All Tiers', 'Silver', 'Gold', 'Black'].map((t, i) => (
-          <label key={t} className="flex items-center gap-2 py-1 cursor-pointer">
-            <input type="checkbox" defaultChecked={i === 0} className="accent-primary w-3.5 h-3.5" />
+          <label key={t} className="flex items-center gap-2 py-0.5 cursor-pointer">
+            <input type="checkbox" defaultChecked={i === 0} className="accent-primary w-3.5 h-3.5 flex-shrink-0" />
             <span className="text-[12px] text-on-surface-var">{t}</span>
           </label>
         ))}
-      </div>
+      </FilterSection>
 
-      <div>
-        <div className="text-[11px] font-bold uppercase tracking-wider text-outline-strong mb-2">Geography</div>
+      <FilterSection title="Geography">
         {['All Markets', 'UAE', 'KSA', 'Kuwait', 'Bahrain', 'Qatar'].map((c, i) => (
-          <label key={c} className="flex items-center gap-2 py-1 cursor-pointer">
-            <input type="checkbox" defaultChecked={i === 0} className="accent-primary w-3.5 h-3.5" />
+          <label key={c} className="flex items-center gap-2 py-0.5 cursor-pointer">
+            <input type="checkbox" defaultChecked={i === 0} className="accent-primary w-3.5 h-3.5 flex-shrink-0" />
             <span className="text-[12px] text-on-surface-var">{c}</span>
           </label>
         ))}
-      </div>
+      </FilterSection>
 
       <button
         type="button"
         onClick={() => {
-          setNotice('Current filter snapshot saved for demo')
+          setNotice('Filter snapshot saved')
           window.setTimeout(() => setNotice(''), 1400)
         }}
         className="focus-ring w-full text-[12px] font-semibold text-primary border border-primary rounded-lg py-2 hover:bg-primary hover:text-white transition-colors"
@@ -219,7 +296,7 @@ function FilterPanel() {
         + Save Current Filters
       </button>
       {notice && <p className="text-[11px] text-primary">{notice}</p>}
-    </>
+    </div>
   )
 }
 

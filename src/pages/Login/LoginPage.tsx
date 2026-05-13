@@ -131,9 +131,7 @@ function HeroSection() {
           <span className="text-[15px] font-bold text-[#0f223b]">Customer Lens</span>
         </div> */}
         <h1 className="text-[40px] md:text-[64px] font-black tracking-tight leading-none text-[#0f223b] mb-4">
-          Customer
-          <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0058bc] to-[#2f7fdd]">Lens</span>
+          Customer <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0058bc] to-[#2f7fdd]">Lens</span>
         </h1>
         <p className="text-[16px] text-[#233b5a]/80 max-w-sm mx-auto">
           One platform. Every insight. All brands.

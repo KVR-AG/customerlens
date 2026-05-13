@@ -11,8 +11,8 @@ const MOCK_TASKS = [
   { id: 't1', title: 'Investigate CA Conversion drop in Dubai Mall', severity: 'critical' as AlertSeverity, scope: 'Dubai Mall · All Brands', status: 'open', priority: 'high', created: '2026-05-12', due: '2026-05-14', assignee: 'Sarah J.' },
   { id: 't2', title: 'Review Silver tier Active Rate decline', severity: 'warning' as AlertSeverity, scope: 'Silver Tier · All Brands', status: 'in_progress', priority: 'medium', created: '2026-05-11', due: '2026-05-15', assignee: 'David C.' },
   { id: 't3', title: 'Assess Points Liability ceiling risk', severity: 'critical' as AlertSeverity, scope: 'Group · All Brands', status: 'open', priority: 'high', created: '2026-05-10', due: '2026-05-13', assignee: 'David C.' },
-  { id: 't4', title: 'Address Full Price Sale % decline in Centrepoint', severity: 'warning' as AlertSeverity, scope: 'Centrepoint · UAE', status: 'open', priority: 'medium', created: '2026-05-09', due: '2026-05-16', assignee: 'Sarah J.' },
-  { id: 't5', title: 'Clear Shoemart KSA aged stock', severity: 'watch' as AlertSeverity, scope: 'Shoemart · KSA', status: 'done', priority: 'low', created: '2026-05-08', due: '2026-05-17', assignee: 'Marketing' },
+  { id: 't4', title: 'Address Full Price Sale % decline in R&B Fashion', severity: 'warning' as AlertSeverity, scope: 'R&B Fashion · UAE', status: 'open', priority: 'medium', created: '2026-05-09', due: '2026-05-16', assignee: 'Sarah J.' },
+  { id: 't5', title: 'Clear Skechers KSA aged stock', severity: 'watch' as AlertSeverity, scope: 'Skechers · KSA', status: 'done', priority: 'low', created: '2026-05-08', due: '2026-05-17', assignee: 'Marketing' },
 ]
 
 const SEVERITY_BADGE: Record<AlertSeverity, string> = {
@@ -142,7 +142,7 @@ export function ActionQueuePage() {
                       <div className="bg-surface rounded-lg px-3 py-2 border border-outline/40 flex-1">
                         <span className="font-semibold text-on-surface">David Chen</span>
                         <span className="text-outline-strong ml-2 text-[10px]">2h ago</span>
-                        <p className="text-on-surface-var mt-0.5">Raised with Centrepoint team. Will review assortment plan by EOD.</p>
+                        <p className="text-on-surface-var mt-0.5">Raised with R&B Fashion team. Will review assortment plan by EOD.</p>
                       </div>
                     </div>
                   </div>
